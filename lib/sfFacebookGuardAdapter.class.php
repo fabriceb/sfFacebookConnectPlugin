@@ -78,6 +78,19 @@ abstract class sfFacebookGuardAdapter
   }
   
   /**
+   * Gets the facebook uid of the user
+   *
+   * @param sfGuardUser $user
+   * @return integer $facebook_uid
+   * @author fabriceb
+   * @since 2009-05-17
+   */
+  public function getUserFacebookUid(&$user)
+  {
+    return $this->getUserProfileProperty($user, 'facebook_uid');
+  }
+  
+  /**
    * Sets the facebook uid of the user
    *
    * @param sfGuardUser $user
@@ -178,6 +191,10 @@ abstract class sfFacebookGuardAdapter
     $sfGuardUser = new sfGuardUser();
     $sfGuardUser->setUsername('Facebook_'.$facebook_uid);
     $this->setUserFacebookUid($sfGuardUser, $facebook_uid);
+    foreach (sfMixer::getCallables('sfFacebookConnect:newSfGuardConnection:preSave') as $callable)
+    {
+      call_user_func($callable, &$sfGuardUser, $facebook_uid);
+    }
     
     // Save them into the database using a transaction to ensure a Facebook sfGuardUser cannot be stored without its facebook uid
     try

@@ -16,8 +16,8 @@ class sfFacebookConnect
    * If a Facebook user already has an account with this site, then
    * their email hash will be returned.
    *
-   * This only works because the site calls facebook.connect.registerUsers
-   * on every registration.
+   * This only works if the site has called facebook.connect.registerUsers
+   * on the same email before
    * @param integer $fb_uid
    * @return string[]
    * @since 2009-05-17 fabriceb addapted to current class
@@ -73,7 +73,11 @@ class sfFacebookConnect
     {
       // Since we looked up by email_hash, save the fb_uid
       // so we can look up directly next time
-      sfFacebook::getGuardAdapter()->setUserFacebookUid($sfGuardUser,$facebook_uid);
+      sfFacebook::getGuardAdapter()->setUserFacebookUid($sfGuardUser, $facebook_uid);
+      foreach (sfMixer::getCallables('sfFacebookConnect:newSfGuardConnection:preSave') as $callable)
+      {
+        call_user_func($callable, &$sfGuardUser, $facebook_uid);
+      }
       $sfGuardUser->getProfile()->save();
     }
     
