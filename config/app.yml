@@ -15,6 +15,7 @@ all:
     profile_email_hash_name: email_hash
   
   facebook_connect:
+    load_routing:     true
     user_permissions: []
     
     
