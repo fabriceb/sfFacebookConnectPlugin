@@ -111,6 +111,7 @@ class sfFacebook
    * @return sfGuardUser
    * @author fabriceb
    * @since 2009-05-17
+   * @since 2009-08-25 
    */
   public static function getSfGuardUserByFacebookSession()
   {
@@ -118,26 +119,13 @@ class sfFacebook
     $fb_uid = self::getFacebookClient()->get_loggedin_user();
     if ($fb_uid)
     {
-      // we get the currently logged in user if there is any
-      $user = sfContext::getInstance()->getUser();
-      if($user->isAuthenticated() && ($sfGuardUser = $user->getGuardUser()))
-      {
-        self::getGuardAdapter()->setUserFacebookUid($sfGuardUser, $fb_uid);
-        $sfGuardUser->save(); 
-      }
-      else
-      {
-        $sfGuardUser = self::getOrCreateUserByFacebookUid($fb_uid);
-      }
       
-      return $sfGuardUser;
+      return self::getOrCreateUserByFacebookUid($fb_uid);
     }
-    else
+    
+    if (sfConfig::get('sf_logging_enabled'))
     {
-      if (sfConfig::get('sf_logging_enabled'))
-      {
-        sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No current Facebook session');
-      }
+      sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No current Facebook session');
     }
     
     return null;
@@ -234,6 +222,7 @@ class sfFacebook
   
   /**
   *
+  * @return sfFacebookGuardAdapter
   * @author fabriceb
   * @since Aug 10, 2009
   */
