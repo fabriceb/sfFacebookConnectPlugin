@@ -261,7 +261,7 @@ class sfFacebook
   public static function isJsLoaded()
   {
     
-    return $this->is_js_loaded;
+    return self::$is_js_loaded;
   }
   
   /**
@@ -272,7 +272,7 @@ class sfFacebook
    */
   public static function setJsLoaded()
   {
-    $this->is_js_loaded = true;
+    self::$is_js_loaded = true;
   } 
   
 }
