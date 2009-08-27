@@ -8,6 +8,10 @@
  */
 function include_bottom_facebook_connect_script($on_load_js = '')
 {
+  if (sfFacebook::isJsLoaded())
+  {
+    return;
+  }
   ?>
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
   <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
@@ -22,7 +26,8 @@ function include_bottom_facebook_connect_script($on_load_js = '')
     }
     //]]>
   </script>
-  <?php  
+  <?php
+  sfFacebook::setJsLoaded();  
 }
 
 /**
@@ -32,16 +37,24 @@ function include_bottom_facebook_connect_script($on_load_js = '')
  */
 function include_facebook_connect_script()
 {
+  if (sfFacebook::isJsLoaded())
+  {
+    return;
+  }
   ?>
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
   <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
   
   <script type="text/javascript">
     //<![CDATA[
-    var sf_fb = new sfFacebookConnect('<?php echo sfConfig::get('app_facebook_api_key') ?>', '<?php echo url_for('sfFacebookConnectAuth/signin') ?>');
+    if (typeof sf_fb == 'undefined')
+    {
+      var sf_fb = new sfFacebookConnect('<?php echo sfConfig::get('app_facebook_api_key') ?>', '<?php echo url_for('sfFacebookConnectAuth/signin') ?>');
+    }
     //]]>
   </script>
   <?php
+  sfFacebook::setJsLoaded();
 }
 
 

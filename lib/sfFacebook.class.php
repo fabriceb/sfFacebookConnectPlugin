@@ -12,7 +12,8 @@ class sfFacebook
     $client          = null;
   protected static
     $guard_adapter   = null;
-    
+  protected static
+    $is_js_loaded       = false;    
   
   /**
    * gets the facebook client instance
@@ -250,5 +251,28 @@ class sfFacebook
     
     return self::$guard_adapter;
   }
+  
+  /**
+   * 
+   * @return boolean
+   * @author fabriceb
+   * @since Aug 27, 2009
+   */
+  public static function isJsLoaded()
+  {
+    
+    return $this->is_js_loaded;
+  }
+  
+  /**
+   * 
+   * @return void
+   * @author fabriceb
+   * @since Aug 27, 2009
+   */
+  public static function setJsLoaded()
+  {
+    $this->is_js_loaded = true;
+  } 
   
 }

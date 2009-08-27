@@ -102,6 +102,19 @@ abstract class sfFacebookGuardAdapter
   {
     $this->setUserProfileProperty($user, 'facebook_uid', $facebook_uid);
   }
+  
+  /**
+  *
+  * @param sfGuardUser $user
+  * @return boolean
+  * @author fabriceb
+  * @since Aug 25, 2009
+  */
+  public function isFacebookConnected($user)
+  {
+  
+    return $this->getUserFacebookUid($user) != '';
+  }
 
   /**
    * Sets a property of the profile of the user

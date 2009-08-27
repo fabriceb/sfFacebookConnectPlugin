@@ -36,7 +36,7 @@ class sfFacebookConnectFilter extends sfFilter
             ->innerJoin('r.sfGuardUser u')
             ->where('r.remember_key = ?', $cookie);
       */
-      $sfGuardUser = sfFacebook::getGuardAdapter()->retrieveSfGuardUserByRememberKey($cookie);
+      $sfGuardUser = sfFacebook::getGuardAdapter()->retrieveSfGuardUserByCookie($cookie);
       
       if ($sfGuardUser)
       {
