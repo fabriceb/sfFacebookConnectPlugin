@@ -275,4 +275,27 @@ class sfFacebook
     self::$is_js_loaded = true;
   } 
   
+  /**
+   * Dirty way to convert fr into fr_FR
+   * @param string $culture
+   * @return string
+   * @author fabriceb
+   * @since Aug 28, 2009
+   */
+  function getLocale($culture = null)
+  {
+    if (is_null($culture))
+    {
+      $culture = sfContexte::getInstance()->getUser()->getCulture();
+    }
+    
+    $culture_to_locale = array(
+      'fr' => 'fr_FR',
+      'en' => 'en_US',
+      'de' => 'de_DE'
+    );
+    
+    return array_key_exists($culture, $culture_to_locale) ? $culture_to_locale[$culture] : ''; 
+  }
+  
 }

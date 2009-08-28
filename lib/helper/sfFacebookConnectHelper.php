@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * 
  * @param string $on_load_js
@@ -13,7 +14,7 @@ function include_bottom_facebook_connect_script($on_load_js = '')
     return;
   }
   ?>
-  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
+  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
   <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
   
   <script type="text/javascript">
@@ -42,7 +43,7 @@ function include_facebook_connect_script()
     return;
   }
   ?>
-  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
+  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
   <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
   
   <script type="text/javascript">
