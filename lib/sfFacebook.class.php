@@ -282,11 +282,11 @@ class sfFacebook
    * @author fabriceb
    * @since Aug 28, 2009
    */
-  function getLocale($culture = null)
+  public static function getLocale($culture = null)
   {
     if (is_null($culture))
     {
-      $culture = sfContexte::getInstance()->getUser()->getCulture();
+      $culture = sfContext::getInstance()->getUser()->getCulture();
     }
     
     $culture_to_locale = array(
