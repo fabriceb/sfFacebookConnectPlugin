@@ -160,19 +160,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
     return $user->getProfile()->$getPropertyMethod();
   }
 
-  /**
-   * Gets the name given to the field, if customized by the user
-   *
-   * @param string $field
-   * @return string
-   * @author fabriceb
-   * @since 2009-05-17
-   */
-  public function getFieldName($field_name)
-  {
-    
-    return sfConfig::get('app_sf_guard_plugin_profile_'.$field_name.'_name', $field_name);
-  }
+
   
    /**
    * Gets the Php name given to the field

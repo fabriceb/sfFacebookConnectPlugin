@@ -16,11 +16,12 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
    * @return string
    * @author fabriceb
    * @since 2009-05-17
+   * @since 2009-09-01 added configurability for Doctrine
    */
   public function getProfilePhpName($field_name)
   {
     
-    return $field_name;
+    return $this->getFieldName($field_name);
   }
   
   /**
@@ -30,11 +31,12 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
    * @return string
    * @author fabriceb
    * @since 2009-05-17
+   * @since 2009-09-01 added configurability for Doctrine
    */
   public function getProfileColumnName($field_name)
   {
     
-    return $field_name;
+    return $this->getFieldName($field_name);
   }
   
   /**
@@ -149,7 +151,7 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
       ->innerJoin('u.Profile p')
       ->where('p.'.$this->getEmailHashColumn().' IS NULL');
     
-    return $q->fetch();
+    return $q->execute();
   }  
   
   /**

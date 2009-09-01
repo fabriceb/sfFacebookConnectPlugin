@@ -48,7 +48,19 @@ abstract class sfFacebookGuardAdapter
     return $this->getProfileColumnName('email_hash');
   }
   
-
+  /**
+   * Gets the name given to the field, if customized by the user
+   *
+   * @param string $field
+   * @return string
+   * @author fabriceb
+   * @since 2009-05-17
+   */
+  public function getFieldName($field_name)
+  {
+    
+    return sfConfig::get('app_sf_guard_plugin_profile_'.$field_name.'_name', $field_name);
+  }
   
   /**
    * gets the profile email
