@@ -47,21 +47,7 @@ abstract class sfFacebookGuardAdapter
     
     return $this->getProfileColumnName('email_hash');
   }
-  
-  /**
-   * Gets the name given to the field, if customized by the user
-   *
-   * @param string $field
-   * @return string
-   * @author fabriceb
-   * @since 2009-05-17
-   */
-  public function getFieldName($field_name)
-  {
     
-    return sfConfig::get('app_sf_guard_plugin_profile_'.$field_name.'_name', $field_name);
-  }
-  
   /**
    * gets the profile email
    *
@@ -216,10 +202,7 @@ abstract class sfFacebookGuardAdapter
     $sfGuardUser = new sfGuardUser();
     $sfGuardUser->setUsername('Facebook_'.$facebook_uid);
     $this->setUserFacebookUid($sfGuardUser, $facebook_uid);
-    foreach (sfMixer::getCallables('sfFacebookConnect:newSfGuardConnection:preSave') as $callable)
-    {
-      call_user_func($callable, &$sfGuardUser, $facebook_uid);
-    }
+    sfFacebookConnect::newSfGuardConnectionHook(&$sfGuardUser, $facebook_uid);
     
     // Save them into the database using a transaction to ensure a Facebook sfGuardUser cannot be stored without its facebook uid
     try

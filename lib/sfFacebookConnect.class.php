@@ -74,15 +74,43 @@ class sfFacebookConnect
       // Since we looked up by email_hash, save the fb_uid
       // so we can look up directly next time
       sfFacebook::getGuardAdapter()->setUserFacebookUid($sfGuardUser, $facebook_uid);
-      foreach (sfMixer::getCallables('sfFacebookConnect:newSfGuardConnection:preSave') as $callable)
-      {
-        call_user_func($callable, &$sfGuardUser, $facebook_uid);
-      }
+      self::newSfGuardConnectionHook(&$sfGuardUser, $facebook_uid);
       $sfGuardUser->getProfile()->save();
     }
     
     return $sfGuardUser;
   }
+  
+  /**
+   * 
+   * @param $sfGuardUser
+   * @param $facebook_uid
+   * @return unknown_type
+   * @author fabriceb
+   * @since Sep 1, 2009
+   */
+  public static function newSfGuardConnectionHook($sfGuardUser, $facebook_uid)
+  {
+    if (class_exists('sfEvent'))
+    {
+      sfContext::getInstance()->getEventDispatcher()->notify(
+          new sfEvent(
+            $sfGuardUser,
+            'sf_guard.user.facebook.create',
+            array('facebook_uid' => $facebook_uid)
+          )
+      );
+    }
+    else
+    {
+      foreach (sfMixer::getCallables('sfFacebookConnect:newSfGuardConnection:preSave') as $callable)
+      {
+        call_user_func($callable, &$sfGuardUser, $facebook_uid);
+      }
+    }
+  }
+  
+  
   
 
   
