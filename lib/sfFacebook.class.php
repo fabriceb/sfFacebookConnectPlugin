@@ -81,11 +81,12 @@ class sfFacebook
    * gets or create user with facebook uid inprofile
    *
    * @param Integer $facebook_uid
+   * @param boolean $isActive
    * @return sfGuardUser $sfGuardUser
    */
-  public static function getOrCreateUserByFacebookUid($facebook_uid)
+  public static function getOrCreateUserByFacebookUid($facebook_uid, $isActive = true)
   {
-    $sfGuardUser = self::getGuardAdapter()->getSfGuardUserByFacebookUid($facebook_uid);
+    $sfGuardUser = self::getGuardAdapter()->getSfGuardUserByFacebookUid($facebook_uid, $isActive);
 
     if (!$sfGuardUser instanceof sfGuardUser)
     {
@@ -103,11 +104,12 @@ class sfFacebook
    * gets user with facebook uid inprofile
    *
    * @param Integer $facebook_uid
+   * @param boolean $isActive
    * @return sfGuardUser $sfGuardUser
    */
-  public static function getUserByFacebookUid($facebook_uid)
+  public static function getUserByFacebookUid($facebook_uid, $isActive = true)
   {
-    $sfGuardUser = self::getGuardAdapter()->retrieveSfGuardUserByFacebookUid($facebook_uid);
+    $sfGuardUser = self::getGuardAdapter()->retrieveSfGuardUserByFacebookUid($facebook_uid, $isActive);
 
     if (!$sfGuardUser instanceof sfGuardUser)
     {
@@ -125,12 +127,13 @@ class sfFacebook
    *
    * @param boolean $create whether to automatically create a sfGuardUser
    * if none found corresponding to the Facebook session 
+   * @param boolean $isActive
    * @return sfGuardUser
    * @author fabriceb
    * @since 2009-05-17
    * @since 2009-08-25
    */
-  public static function getSfGuardUserByFacebookSession($create = true)
+  public static function getSfGuardUserByFacebookSession($create = true, $isActive = true)
   {
     // We get the facebook uid from session
     $fb_uid = self::getFacebookClient()->get_loggedin_user();
@@ -140,12 +143,12 @@ class sfFacebook
       if ($create)
       {
         
-        return self::getOrCreateUserByFacebookUid($fb_uid);
+        return self::getOrCreateUserByFacebookUid($fb_uid, $isActive);
       }
       else
       {
         
-        return self::getUserByFacebookUid($fb_uid);
+        return self::getUserByFacebookUid($fb_uid, $isActive);
       }
     }
 

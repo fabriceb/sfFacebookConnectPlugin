@@ -56,27 +56,33 @@ class BasesfFacebookConnectAuthActions extends sfActions
 
       $this->redirect('' != $signin_url ? $signin_url : '@homepage');
     }
-
-    if ($this->getRequest()->isXmlHttpRequest())
+    // check if user forgot to activate the account
+    $sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession($create_automatically, false);
+    if (!$sfGuardUser)
     {
-      $this->getResponse()->setHeaderOnly(true);
-      $this->getResponse()->setStatusCode(401);
-
-      return sfView::NONE;
-    }
-
-    if (!$user->hasAttribute('referer'))
-    {
-      $user->setAttribute('referer', $this->getRequest()->getUri());
+      if ($this->getRequest()->isXmlHttpRequest())
+      {
+        $this->getResponse()->setHeaderOnly(true);
+        $this->getResponse()->setStatusCode(401);
+  
+        return sfView::NONE;
+      }
+  
+      if (!$user->hasAttribute('referer'))
+      {
+        $user->setAttribute('referer', $this->getRequest()->getUri());
+      }
+      
+      $redirect_url = sfConfig::get('app_facebook_redirect_after_connect_url');
+      if (!$redirect_url)
+      {
+        $redirect_url = sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action');
+      }
+  
+      return $this->redirect($redirect_url);
     }
     
-    $redirect_url = sfConfig::get('app_facebook_redirect_after_connect_url');
-    if (!$redirect_url)
-    {
-      $redirect_url = sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action');
-    }
-
-    return $this->redirect($redirect_url);
+    // TODO: What if the guy did not activate his account ?
   }
   
 
