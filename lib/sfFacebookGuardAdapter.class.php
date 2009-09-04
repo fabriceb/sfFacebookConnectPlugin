@@ -176,7 +176,31 @@ abstract class sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  abstract function getSfGuardUserByFacebookUid($facebook_uid);
+  abstract function retrieveSfGuardUserByFacebookUid($facebook_uid);
+  
+  /**
+   * gets a sfGuardUser using the facebook_uid column of his Profile class or his email_hash
+   *
+   * @param Integer $facebook_uid
+   * @return sfGuardUser
+   * @author fabriceb
+   * @since 2009-05-17
+   */
+  public function getSfGuardUserByFacebookUid($facebook_uid)
+  {
+    $sfGuardUser = self::retrieveSfGuardUserByFacebookUid($facebook_uid);
+    
+    if (!$sfGuardUser instanceof sfGuardUser)
+    {
+      if (sfConfig::get('sf_logging_enabled'))
+      {
+        sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No user exists with current facebook_uid');
+      }
+      $sfGuardUser = sfFacebookConnect::getSfGuardUserByFacebookEmail($facebook_uid);
+    }
+    
+    return $sfGuardUser;
+  }
 
   /**
    * tries to get a sfGuardUser using the facebook email hash

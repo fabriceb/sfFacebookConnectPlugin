@@ -4,8 +4,8 @@ all:
     api_key: xxx
     api_secret: xxx
     api_id: xxx
-    callback_url: http://www.yourserver.com
-    app_url:      http://apps.facebook.com/your-app
+    redirect_after_connect: false
+    redirect_after_connect_url: ''
 
   sf_guard_plugin:
     profile_class: sfGuardUserProfile

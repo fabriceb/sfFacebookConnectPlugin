@@ -73,7 +73,7 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function getSfGuardUserByFacebookUid($facebook_uid)
+  public function retrieveSfGuardUserByFacebookUid($facebook_uid)
   {
     $q = Doctrine_Query::create()
       ->from('sfGuardUser u')

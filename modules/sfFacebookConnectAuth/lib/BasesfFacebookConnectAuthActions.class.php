@@ -69,7 +69,40 @@ class BasesfFacebookConnectAuthActions extends sfActions
     }
 
     return $this->redirect(sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action'));
+  }
+  
+  /**
+   * Sign in with the Facebook account
+   * @author fabriceb
+   * @since 2009-05-17
+   *
+   */
+  public function executeSigninOrRedirect()
+  {
+    $sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession(false);
+    $user = $this->getUser();
+    if ($sfGuardUser)
+    {
+      $this->getContext()->getUser()->signIn($sfGuardUser);
 
+
+      $referer = $user->getAttribute('referer', $this->getRequest()->getReferer());
+      $user->getAttributeHolder()->remove('referer');
+
+      $signin_url = sfConfig::get('app_sf_guard_plugin_success_signin_url', $referer);
+
+      $forward = $this->getRequestParameter('forward');
+
+      $signin_url = $forward != '' ? $forward : $signin_url;
+
+      $this->redirect('' != $signin_url ? $signin_url : '@homepage');
+    }
+    else
+    {
+      $redirect = sfConfig::get('app_facebook_redirect_after_connect_url');
+      
+      return $this->redirect($redirect);
+    }
   }
 
 }

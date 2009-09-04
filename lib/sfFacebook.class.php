@@ -86,14 +86,7 @@ class sfFacebook
   public static function getOrCreateUserByFacebookUid($facebook_uid)
   {
     $sfGuardUser = self::getGuardAdapter()->getSfGuardUserByFacebookUid($facebook_uid);
-    if (!$sfGuardUser instanceof sfGuardUser)
-    {
-      if (sfConfig::get('sf_logging_enabled'))
-      {
-        sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No user exists with current facebook_uid');
-      }
-      $sfGuardUser = sfFacebookConnect::getSfGuardUserByFacebookEmail($facebook_uid);
-    }
+
     if (!$sfGuardUser instanceof sfGuardUser)
     {
       if (sfConfig::get('sf_logging_enabled'))
@@ -105,23 +98,55 @@ class sfFacebook
 
     return $sfGuardUser;
   }
+  
+  /**
+   * gets user with facebook uid inprofile
+   *
+   * @param Integer $facebook_uid
+   * @return sfGuardUser $sfGuardUser
+   */
+  public static function getUserByFacebookUid($facebook_uid)
+  {
+    $sfGuardUser = self::getGuardAdapter()->retrieveSfGuardUserByFacebookUid($facebook_uid);
+
+    if (!$sfGuardUser instanceof sfGuardUser)
+    {
+      if (sfConfig::get('sf_logging_enabled'))
+      {
+        sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No user exists with current email hash');
+      }
+    }
+
+    return $sfGuardUser;
+  }
 
   /**
    * Gets the currently logged sfGuardUser using Facebook Session
    *
+   * @param boolean $create whether to automatically create a sfGuardUser
+   * if none found corresponding to the Facebook session 
    * @return sfGuardUser
    * @author fabriceb
    * @since 2009-05-17
    * @since 2009-08-25
    */
-  public static function getSfGuardUserByFacebookSession()
+  public static function getSfGuardUserByFacebookSession($create = true)
   {
     // We get the facebook uid from session
     $fb_uid = self::getFacebookClient()->get_loggedin_user();
     if ($fb_uid)
     {
 
-      return self::getOrCreateUserByFacebookUid($fb_uid);
+      if ($create)
+      {
+        
+        return self::getOrCreateUserByFacebookUid($fb_uid);
+      }
+      else
+      {
+        
+        return self::getUserByFacebookUid($fb_uid);
+      }
     }
 
     if (sfConfig::get('sf_logging_enabled'))
@@ -131,7 +156,7 @@ class sfFacebook
 
     return null;
   }
-
+  
   /**
    * checks the existence of the HTTP_X_FB_USER_REMOTE_ADDR porperty in the header
    * which is a sign of being included by the fbml interface

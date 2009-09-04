@@ -214,7 +214,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function getSfGuardUserByFacebookUid($facebook_uid)
+  public function retrieveSfGuardUserByFacebookUid($facebook_uid)
   {
     $c = new Criteria();
     $c->addJoin(sfGuardUserPeer::ID,$this->getSfGuardUserforeignKeyColumn());
