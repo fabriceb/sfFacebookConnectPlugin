@@ -273,8 +273,8 @@ class sfFacebook
   public static function setJsLoaded()
   {
     self::$is_js_loaded = true;
-  } 
-  
+  }
+
   /**
    * Dirty way to convert fr into fr_FR
    * @param string $culture
@@ -288,14 +288,14 @@ class sfFacebook
     {
       $culture = sfContext::getInstance()->getUser()->getCulture();
     }
-    
+
     $culture_to_locale = array(
       'fr' => 'fr_FR',
       'en' => 'en_US',
       'de' => 'de_DE'
     );
-    
-    return array_key_exists($culture, $culture_to_locale) ? $culture_to_locale[$culture] : ''; 
+
+    return array_key_exists($culture, $culture_to_locale) ? $culture_to_locale[$culture] : $culture;
   }
-  
+
 }
