@@ -68,7 +68,6 @@ function include_facebook_connect_script()
  */
 function facebook_connect_button($forward = '', $callback = '', $options = array())
 {
-  // options
   $default_options =
     array(
       'size' => 'medium',
@@ -76,36 +75,15 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
     );
   $options = array_merge($default_options, $options);
 
-  // js arguments
-  $js_arguments = array();
-  if ($forward)
-  {
-    $js_arguments['forward'] = "'".rawurlencode($forward)."'";
-  }
+  $js_arguments = array("'".rawurlencode($forward)."'");
   if ($callback != '')
   {
-    $js_arguments['callback'] = $callback;
+    array_push($js_arguments,$callback);
   }
 
-  if (sfConfig::get('app_facebook_redirect_after_connect'))
-  {
-    $js_arguments['redirect'] = 'true';
-  }
-  // convert to json but do not quote every value 
-  $options_array = array();
-  foreach($js_arguments as $name => $value)
-  {
-    if (!is_null($value))
-  	{
-  	  $options_array[] = $name.': '.$value;
-  	}
-  }
-  $js_arguments = '{'.implode(', ', $options_array).'}';
-  
-  // html
   $html =
   '
-  <a href="#" onclick="sf_fb.requireSession('.$js_arguments.');return false;">'.
+  <a href="#" onclick="sf_fb.requireSession('.implode(',',$js_arguments).');return false;">'.
     image_tag(
       '/sfFacebookConnectPlugin/images/fb_'.$options['bg'].'_'.$options['size'].'_short.gif',
       array(

@@ -1,9 +1,8 @@
-sfFacebookConnect = function(api_key, signin_url, redirect_url)
+sfFacebookConnect = function(api_key, signin_url)
 {
   this.xd_receiver_path = "/sfFacebookConnectPlugin/xd_receiver.htm";
   this.api_key = api_key;
   this.signin_url = signin_url;
-  this.redirect_url = redirect_url;
   this.callback = '';
   this.forward = '';
   
@@ -13,56 +12,30 @@ sfFacebookConnect.prototype.init = function()
 {
   FB.init(this.api_key,this.xd_receiver_path);
 }
-sfFacebookConnect.prototype.getSigninUrl = function(redirect)
+sfFacebookConnect.prototype.getSigninUrl = function()
 {
-  t_signin_url = this.signin_url + '?';
+  t_signin_url = this.signin_url;
   if(this.forward != undefined && this.forward != '')
   {
-    t_signin_url += '&forward=' + this.forward; 
-  }
-  if (redirect != undefined && redirect == true)
-  {
-    t_signin_url += '&redirect=' + redirect;
+    t_signin_url += '?forward=' + this.forward; 
   }
   
   return t_signin_url;
 }
-sfFacebookConnect.prototype.gotoLoginPage = function(redirect)
+sfFacebookConnect.prototype.gotoLoginPage = function()
 {
-  document.location.href= this.getSigninUrl(redirect);
+  //console.log(this.getSigninUrl());
+  document.location.href= this.getSigninUrl();
 };
-sfFacebookConnect.prototype.gotoLoginOrRedirectPage = function()
+sfFacebookConnect.prototype.requireSession = function(forward, callback)
 {
-  document.location.href= this.getSigninOrRedirectUrl();
-};
-/**
- * @param options
- * {
- *   forward: url to forward to after successful signin
- *   callback: the js function to execute after Facebook Connection
- *   redirect: url to redirect to if Facebook Connection is successful but sfGuardUser account does not exist
- * }
- */
-sfFacebookConnect.prototype.requireSession = function(options)
-{
-  this.forward = options.forward;
-  console.log(this.forward);
-  console.log(options.callback);
-  console.log(options.redirect);
-  if (options.callback==undefined )
+  this.forward = forward;
+  if (callback==undefined)
   {
-    if (options.redirect==undefined)
-    {
-	  var current_obj = this;
-	  options.callback = function(){current_obj.gotoLoginPage()};
-    }
-    else
-    {
-      var current_obj = this;
-      options.callback = function(){current_obj.gotoLoginPage(true)};
-    }
+	var current_obj = this;
+	callback = function(){current_obj.gotoLoginPage()};
   }
-  FB.Connect.requireSession(options.callback);
+  FB.Connect.requireSession(callback);
 };
 
 /*
