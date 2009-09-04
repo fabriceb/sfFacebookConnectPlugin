@@ -22,7 +22,7 @@ function include_bottom_facebook_connect_script($on_load_js = '')
     var sf_fb = null;
     window.onload = function()
     {
-      sf_fb = new sfFacebookConnect('<?php echo sfConfig::get('app_facebook_api_key') ?>', '<?php echo url_for('sfFacebookConnectAuth/signin') ?>');
+      sf_fb = new sfFacebookConnect('<?php echo sfConfig::get('app_facebook_api_key') ?>', '<?php echo url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin')) ?>');
       <?php echo $on_load_js ?>
     }
     //]]>
@@ -50,7 +50,7 @@ function include_facebook_connect_script()
     //<![CDATA[
     if (typeof sf_fb == 'undefined')
     {
-      var sf_fb = new sfFacebookConnect('<?php echo sfConfig::get('app_facebook_api_key') ?>', '<?php echo url_for('sfFacebookConnectAuth/signin') ?>');
+      var sf_fb = new sfFacebookConnect('<?php echo sfConfig::get('app_facebook_api_key') ?>', '<?php echo url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin')) ?>');
     }
     //]]>
   </script>
