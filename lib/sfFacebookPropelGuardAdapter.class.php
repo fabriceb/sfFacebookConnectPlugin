@@ -210,15 +210,17 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
    * gets a sfGuardUser using the facebook_uid column of his Profile class
    *
    * @param Integer $facebook_uid
+   * @param boolean $isActive
    * @return sfGuardUser
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function retrieveSfGuardUserByFacebookUid($facebook_uid)
+  public function retrieveSfGuardUserByFacebookUid($facebook_uid, $isActive = true)
   {
     $c = new Criteria();
     $c->addJoin(sfGuardUserPeer::ID,$this->getSfGuardUserforeignKeyColumn());
     $c->add($this->getFacebookUidColumn(),$facebook_uid);
+    $c->add(sfGuardUserPeer::IS_ACTIVE, $isActive);
 
     return sfGuardUserPeer::doSelectOne($c);
   }
@@ -227,13 +229,14 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
    * gets a sfGuardUser using the facebook_uid column of his Profile class or his email_hash
    *
    * @param Integer $facebook_uid
+   * @param boolean $isActive
    * @return sfGuardUser
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function getSfGuardUserByFacebookUid($facebook_uid)
+  public function getSfGuardUserByFacebookUid($facebook_uid, $isActive = true)
   {
-    $sfGuardUser = self::retrieveSfGuardUserByFacebookUid($facebook_uid);
+    $sfGuardUser = self::retrieveSfGuardUserByFacebookUid($facebook_uid, $isActive);
     
     if (!$sfGuardUser instanceof sfGuardUser)
     {
@@ -241,7 +244,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
       {
         sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No user exists with current facebook_uid');
       }
-      $sfGuardUser = sfFacebookConnect::getSfGuardUserByFacebookEmail($facebook_uid);
+      $sfGuardUser = sfFacebookConnect::getSfGuardUserByFacebookEmail($facebook_uid, $isActive);
     }
     
     return $sfGuardUser;
@@ -251,11 +254,12 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
    * tries to get a sfGuardUser using the facebook email hash
    *
    * @param string[] $email_hashes
+   * @param boolean $isActive
    * @return sfGuardUser
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function getSfGuardUserByEmailHashes($email_hashes)
+  public function getSfGuardUserByEmailHashes($email_hashes, $isActive = true)
   {
     if (!is_array($email_hashes) || count($email_hashes) == 0)
     {
@@ -266,6 +270,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
     $c = new Criteria();
     $c->addJoin(sfGuardUserPeer::ID,$this->getSfGuardUserforeignKeyColumn());
     $c->add($this->getEmailHashColumn(),$email_hashes,CRITERIA::IN);
+    $c->add(sfGuardUserPeer::IS_ACTIVE, $isActive);
 
     // NOTE: if a user has multiple emails on their facebook account,
     // and more than one is registered on the site, then we will

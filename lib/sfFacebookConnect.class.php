@@ -48,11 +48,12 @@ class sfFacebookConnect
    * tries to get a sfGuardUser using the facebook email hash
    *
    * @param Integer $facebook_uid
+   * @param boolean $isActive
    * @return sfGuardUser
    * @author fabriceb
    * @since 2009-05-17
    */
-  public static function getSfGuardUserByFacebookEmail($facebook_uid)
+  public static function getSfGuardUserByFacebookEmail($facebook_uid, $isActive = true)
   {
     try
     {
@@ -68,7 +69,7 @@ class sfFacebookConnect
       return null;
     }
     $email_hashes = self::getFacebookUserEmailHashes($facebook_uid);
-    $sfGuardUser = sfFacebook::getGuardAdapter()->getSfGuardUserByEmailHashes($email_hashes);
+    $sfGuardUser = sfFacebook::getGuardAdapter()->getSfGuardUserByEmailHashes($email_hashes, $isActive);
     if ($sfGuardUser)
     {
       // Since we looked up by email_hash, save the fb_uid
