@@ -1,7 +1,7 @@
 <?php
 
 /** Based on sfGuardRememberMeFilter
- *  
+ *
  *  Place this filter before the security filter in filters.yml e.g.
  *  ...
  *  facebook_connect:
@@ -14,7 +14,7 @@
  */
 class sfFacebookConnectFilter extends sfFilter
 {
-  
+
   /**
    * @see sfFilter
    */
@@ -37,7 +37,7 @@ class sfFacebookConnectFilter extends sfFilter
             ->where('r.remember_key = ?', $cookie);
       */
       $sfGuardUser = sfFacebook::getGuardAdapter()->retrieveSfGuardUserByCookie($cookie);
-      
+
       if ($sfGuardUser)
       {
         $this->getContext()->getUser()->signIn($sfGuardUser, true);

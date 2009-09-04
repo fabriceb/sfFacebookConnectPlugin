@@ -13,7 +13,7 @@ Welcome <fb:name uid="<?php echo $sf_user->getCurrentFacebookUid() ?>" useyou="f
 <?php else: ?>
   Tu n'es pas connecté... Connecte toi avec Facebook connect !
   <?php echo facebook_connect_button(); ?>
-<?php endif; ?> 
+<?php endif; ?>
 
 <?php include_bottom_facebook_connect_script(); ?>
 </div>

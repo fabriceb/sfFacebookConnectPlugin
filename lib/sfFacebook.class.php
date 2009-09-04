@@ -13,8 +13,8 @@ class sfFacebook
   protected static
     $guard_adapter   = null;
   protected static
-    $is_js_loaded       = false;    
-  
+    $is_js_loaded       = false;
+
   /**
    * gets the facebook client instance
    *
@@ -33,10 +33,10 @@ class sfFacebook
     {
       error_log('Could not create facebook client.');
     }
-    
+
     return self::$client;
   }
-  
+
   /**
    *
    * @return FacebookRestClient
@@ -45,7 +45,7 @@ class sfFacebook
    */
   public static function getFacebookApi()
   {
-  
+
     return self::getFacebookClient()->api_client;
   }
 
@@ -58,25 +58,25 @@ class sfFacebook
    */
   public static function getApiKey()
   {
-    
+
     return sfConfig::get('app_facebook_api_key');
   }
-  
+
    /**
    * gets the facebook api secret
    *
    * @return Facebook
    * @author fabriceb
    * @since 2009-05-17
-   */  
+   */
   public static function getApiSecret()
   {
-    
+
     return sfConfig::get('app_facebook_api_secret');
   }
-  
 
-  
+
+
   /**
    * gets or create user with facebook uid inprofile
    *
@@ -99,20 +99,20 @@ class sfFacebook
       if (sfConfig::get('sf_logging_enabled'))
       {
         sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No user exists with current email hash');
-      }      
+      }
       $sfGuardUser = self::getGuardAdapter()->createSfGuardUserWithFacebookUid($facebook_uid);
     }
-    
+
     return $sfGuardUser;
   }
-  
+
   /**
    * Gets the currently logged sfGuardUser using Facebook Session
    *
    * @return sfGuardUser
    * @author fabriceb
    * @since 2009-05-17
-   * @since 2009-08-25 
+   * @since 2009-08-25
    */
   public static function getSfGuardUserByFacebookSession()
   {
@@ -120,47 +120,47 @@ class sfFacebook
     $fb_uid = self::getFacebookClient()->get_loggedin_user();
     if ($fb_uid)
     {
-      
+
       return self::getOrCreateUserByFacebookUid($fb_uid);
     }
-    
+
     if (sfConfig::get('sf_logging_enabled'))
     {
       sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No current Facebook session');
     }
-    
+
     return null;
   }
-  
+
   /**
    * checks the existence of the HTTP_X_FB_USER_REMOTE_ADDR porperty in the header
    * which is a sign of being included by the fbml interface
-   * 
+   *
    * @return boolean
    * @author fabriceb
    * @since Jun 8, 2009 fabriceb
    */
   public static function isInsideFacebook()
   {
-    
+
     return isset($_SERVER['HTTP_X_FB_USER_REMOTE_ADDR']);
   }
-  
+
   /**
-   * 
+   *
    * @return boolean
    * @author fabriceb
    * @since Jun 8, 2009 fabriceb
    */
   public static function inCanvas()
   {
-    
+
     return self::getFacebookClient()->in_fb_canvas();
   }
-  
+
   /**
    * redirects to the login page of the Facebook application if not logged yet
-   * 
+   *
    * @author fabriceb
    * @since Jun 8, 2009 fabriceb
    */
@@ -168,10 +168,10 @@ class sfFacebook
   {
     self::getFacebookClient()->require_login();
   }
-  
+
   /**
    * redirects depnding on in canvas or not
-   * 
+   *
    * @param $url
    * @param $statusCode
    * @return mixed sfView::NONE or sfStopException
@@ -185,18 +185,18 @@ class sfFacebook
       $url = sfContext::getInstance()->getController()->genUrl($url, false);
       $url = sfConfig::get('app_facebook_app_url').$url;
       $text = '<fb:redirect url="' . $url . '"/>';
-      
+
       sfContext::getInstance()->getResponse()->setContent(sfContext::getInstance()->getResponse()->getContent().$text);
-      
+
       return sfView::NONE;
-    }    
+    }
     sfContext::getInstance()->getController()->redirect($url, 0, $statusCode);
 
     throw new sfStopException();
   }
-  
+
   /**
-   * 
+   *
    * @param integer $user_uid
    * @return integer[]
    * @author fabriceb
@@ -204,7 +204,7 @@ class sfFacebook
    */
   public static function getFacebookFriendsUids($user_uid = null)
   {
-    
+
     try
     {
       $friends_uids = self::getFacebookApi()->friends_get(null, $user_uid);
@@ -217,10 +217,10 @@ class sfFacebook
         sfContext::getInstance()->getLogger()->info('{FacebookRestClientException} '.$e->getMessage());
       }
     }
-  
-    return $friends_uids; 
+
+    return $friends_uids;
   }
-  
+
   /**
   *
   * @return sfFacebookGuardAdapter
@@ -228,10 +228,10 @@ class sfFacebook
   * @since Aug 10, 2009
   */
   public static function getGuardAdapter()
-  {    
-    
-    
-  
+  {
+
+
+
     if (self::$guard_adapter === null)
     {
       if (class_exists('sfGuardUserPeer', true))
@@ -248,24 +248,24 @@ class sfFacebook
     {
       error_log('Could not create guard adapter.');
     }
-    
+
     return self::$guard_adapter;
   }
-  
+
   /**
-   * 
+   *
    * @return boolean
    * @author fabriceb
    * @since Aug 27, 2009
    */
   public static function isJsLoaded()
   {
-    
+
     return self::$is_js_loaded;
   }
-  
+
   /**
-   * 
+   *
    * @return void
    * @author fabriceb
    * @since Aug 27, 2009

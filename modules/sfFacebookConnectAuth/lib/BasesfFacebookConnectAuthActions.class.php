@@ -3,7 +3,7 @@
 
 class BasesfFacebookConnectAuthActions extends sfActions
 {
-  
+
    /**
    * Sign in with the Facebook account, ajax
    * @author fabriceb
@@ -18,10 +18,10 @@ class BasesfFacebookConnectAuthActions extends sfActions
     {
       $this->getContext()->getUser()->signIn($sfGuardUser);
       $this->getResponse()->setHeaderOnly(true);
-      
+
       return sfView::NONE;
     }
-    
+
     $this->getResponse()->setHeaderOnly(true);
     $this->getResponse()->setStatusCode(401);
 
@@ -41,20 +41,20 @@ class BasesfFacebookConnectAuthActions extends sfActions
     if ($sfGuardUser)
     {
       $this->getContext()->getUser()->signIn($sfGuardUser);
-      
-      
+
+
       $referer = $user->getAttribute('referer', $this->getRequest()->getReferer());
       $user->getAttributeHolder()->remove('referer');
 
       $signin_url = sfConfig::get('app_sf_guard_plugin_success_signin_url', $referer);
-      
+
       $forward = $this->getRequestParameter('forward');
-      
+
       $signin_url = $forward != '' ? $forward : $signin_url;
 
       $this->redirect('' != $signin_url ? $signin_url : '@homepage');
     }
-    
+
     if ($this->getRequest()->isXmlHttpRequest())
     {
       $this->getResponse()->setHeaderOnly(true);
@@ -69,7 +69,7 @@ class BasesfFacebookConnectAuthActions extends sfActions
     }
 
     return $this->redirect(sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action'));
-    
+
   }
 
 }

@@ -46,7 +46,7 @@ try
   $con->beginTransaction();
 
   $sfGuardUser->save();
-  
+
 
   $sfGuardUser->getProfile()->save();
   $con->commit();

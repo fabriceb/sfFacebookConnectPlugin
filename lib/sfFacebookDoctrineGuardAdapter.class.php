@@ -8,7 +8,7 @@
  */
 class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
 {
-  
+
    /**
    * Gets the Php name given to the field
    *
@@ -20,10 +20,10 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
    */
   public function getProfilePhpName($field_name)
   {
-    
+
     return $this->getFieldName($field_name);
   }
-  
+
   /**
    * Gets the Php name given to the field
    *
@@ -35,10 +35,10 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
    */
   public function getProfileColumnName($field_name)
   {
-    
+
     return $this->getFieldName($field_name);
   }
-  
+
   /**
    * Sets a property of the profile of the user
    *
@@ -64,9 +64,9 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
   {
     return $user->getProfile()->$property_name;
   }
-  
+
   /**
-   * gets a sfGuardUser using the facebook_uid column of his Profile class  
+   * gets a sfGuardUser using the facebook_uid column of his Profile class
    *
    * @param Integer $facebook_uid
    * @return sfGuardUser
@@ -79,18 +79,18 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
       ->from('sfGuardUser u')
       ->innerJoin('u.Profile p')
       ->where('p.'.$this->getFacebookUidColumn().' = ?', $facebook_uid);
-    
+
     if ($q->count())
     {
-      
+
       return $q->fetchOne();
-    } 
-  
+    }
+
     return null;
   }
-  
+
   /**
-   * tries to get a sfGuardUser using the facebook email hash  
+   * tries to get a sfGuardUser using the facebook email hash
    *
    * @param string[] $email_hashes
    * @return sfGuardUser
@@ -101,27 +101,27 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
   {
     if (!is_array($email_hashes) || count($email_hashes) == 0)
     {
-      
+
       return null;
     }
-    
+
     $q = Doctrine_Query::create()
       ->from('sfGuardUser u')
       ->innerJoin('u.Profile p')
       ->whereIn('p.'.$this->getEmailHashColumn(), $email_hashes);
-    
+
     if ($q->count())
     {
       // NOTE: if a user has multiple emails on their facebook account,
       // and more than one is registered on the site, then we will
       // only return the first one.
-    
+
       return $q->fetchOne();
-    } 
-  
+    }
+
     return null;
   }
-  
+
   /**
    * Creates an empty sfGuardUser with profile field Facebook UID set
    *
@@ -133,10 +133,10 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
   public function createSfGuardUserWithFacebookUid($facebook_uid)
   {
     $con = Doctrine::getConnectionByTableName('sfGuardUser');
-    
+
     return parent::createSfGuardUserWithFacebookUidAndCon($facebook_uid, $con);
   }
-  
+
   /**
    * gets Non Facebook-registered Users
    *
@@ -150,10 +150,10 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
       ->from('sfGuardUser u')
       ->innerJoin('u.Profile p')
       ->where('p.'.$this->getEmailHashColumn().' IS NULL');
-    
+
     return $q->execute();
-  }  
-  
+  }
+
   /**
   *
   * @param string $cookie
@@ -167,14 +167,14 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
       ->from('sfGuardRememberKey r')
       ->innerJoin('r.sfGuardUser u')
       ->where('r.remember_key = ?', $cookie);
-    
+
     if ($q->count())
     {
-      
+
       return $q->fetchOne()->sfGuardUser;
-    } 
-  
+    }
+
     return null;
   }
 }
-  
+

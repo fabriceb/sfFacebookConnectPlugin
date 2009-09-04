@@ -2,7 +2,7 @@
 
 
 /**
- * 
+ *
  * @param string $on_load_js
  * @author fabriceb
  * @since May 27, 2009 fabriceb
@@ -16,7 +16,7 @@ function include_bottom_facebook_connect_script($on_load_js = '')
   ?>
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
   <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
-  
+
   <script type="text/javascript">
     //<![CDATA[
     var sf_fb = null;
@@ -28,11 +28,11 @@ function include_bottom_facebook_connect_script($on_load_js = '')
     //]]>
   </script>
   <?php
-  sfFacebook::setJsLoaded();  
+  sfFacebook::setJsLoaded();
 }
 
 /**
- * 
+ *
  * @author fabriceb
  * @since May 27, 2009 fabriceb
  */
@@ -45,7 +45,7 @@ function include_facebook_connect_script()
   ?>
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
   <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
-  
+
   <script type="text/javascript">
     //<![CDATA[
     if (typeof sf_fb == 'undefined')
@@ -60,7 +60,7 @@ function include_facebook_connect_script()
 
 
 /**
- * 
+ *
  * @param string $forward a url to forward to
  * @return string
  * @author fabriceb
@@ -74,14 +74,14 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
       'bg'   => 'light'
     );
   $options = array_merge($default_options, $options);
-  
+
   $js_arguments = array("'".rawurlencode($forward)."'");
   if ($callback != '')
   {
     array_push($js_arguments,$callback);
   }
-  
-  $html = 
+
+  $html =
   '
   <a href="#" onclick="sf_fb.requireSession('.implode(',',$js_arguments).');return false;">'.
     image_tag(
@@ -92,6 +92,6 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
       )
     ).
   '</a>';
-    
+
   return $html;
 }

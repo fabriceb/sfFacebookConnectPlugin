@@ -1,14 +1,14 @@
 <?php
 
 /**
- * 
+ *
  * @author fabriceb
  * @since Aug 24, 2009
  *
  */
 class sfFacebookApplicationFilter extends sfFilter
 {
-  
+
   public function execute ($filterChain)
   {
     if ($this->isFirstCall() && !$this->getContext()->getUser()->isAuthenticated())
@@ -17,7 +17,7 @@ class sfFacebookApplicationFilter extends sfFilter
       {
         sfContext::getInstance()->getLogger()->info('{sfFacebookApplicationFilter} Trying to authenticate the current user');
       }
-      $sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession();        
+      $sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession();
       if ($sfGuardUser)
       {
         $this->getContext()->getUser()->signIn($sfGuardUser, true);

@@ -14,7 +14,7 @@ function run_facebook_register_feed($task, $args)
   define('SF_ROOT_DIR',    sfConfig::get('sf_root_dir'));
   define('SF_APP',         $app);
   require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
-  
+
   $one_line_story_templates = array();
   $one_line_story_templates[] = '{*actor*} va voir le match {*match*} au bar {*bar*} {*date*} !';
   $short_story_templates = array();
@@ -37,12 +37,12 @@ function run_facebook_register_feed($task, $args)
     $short_story_templates,
     null,
     $action_links
-  ); 
-  
-  
+  );
+
+
 }
 /*
- * 
+ *
   $one_line_story_templates = array();
   $one_line_story_templates[] = '{*actor*} va voir le match {*match*} au bar {*bar*} {*date*} !';
   $short_story_templates = array();

@@ -18,7 +18,7 @@ class sfFacebookSecurityFilter extends sfBasicSecurityFilter
     {
       sfFacebook::requireLogin();
     }
-    
+
     parent::execute($filterChain);
   }
 }

@@ -9,9 +9,9 @@
 class sfFacebookConnect
 {
 
-  
 
-  
+
+
   /**
    * If a Facebook user already has an account with this site, then
    * their email hash will be returned.
@@ -37,15 +37,15 @@ class sfFacebookConnect
 
     if (is_array($rows) && (count($rows) == 1) && is_array($rows[0]['email_hashes']))
     {
-      
+
       return $rows[0]['email_hashes'];
     }
-    
+
     return null;
   }
-  
+
   /**
-   * tries to get a sfGuardUser using the facebook email hash  
+   * tries to get a sfGuardUser using the facebook email hash
    *
    * @param Integer $facebook_uid
    * @return sfGuardUser
@@ -64,7 +64,7 @@ class sfFacebookConnect
       {
         sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} No email_hash column for this user');
       }
-      
+
       return null;
     }
     $email_hashes = self::getFacebookUserEmailHashes($facebook_uid);
@@ -77,12 +77,12 @@ class sfFacebookConnect
       self::newSfGuardConnectionHook(&$sfGuardUser, $facebook_uid);
       $sfGuardUser->getProfile()->save();
     }
-    
+
     return $sfGuardUser;
   }
-  
+
   /**
-   * 
+   *
    * @param $sfGuardUser
    * @param $facebook_uid
    * @return unknown_type
@@ -109,13 +109,13 @@ class sfFacebookConnect
       }
     }
   }
-  
-  
-  
 
-  
 
-  
+
+
+
+
+
   /**
   * Returns the "public" hash of the email address, i.e., the one we give out
   * to select partners via our API.
@@ -129,13 +129,13 @@ class sfFacebookConnect
     if ($email != null)
     {
       $email = trim(strtolower($email));
-      
+
       return sprintf("%u", crc32($email)) . '_' . md5($email);
     }
-    
+
     return '';
   }
-  
+
   /**
    * Register new accounts with Facebook to facilitate friend linking.
    * Note: this is an optional step, and only makes sense if you have
@@ -170,20 +170,20 @@ class sfFacebookConnect
     }
     if (count($accounts)==0)
     {
-      
+
       return 0;
     }
     $facebook = sfFacebook::getFacebookClient();
     $session_key = $facebook->api_client->session_key;
     $facebook->api_client->session_key = null;
-  
+
     $result = false;
     try
     {
       $ret = $facebook->api_client->call_method(
                'facebook.connect.registerUsers',
                array('accounts' => json_encode($accounts)));
-  
+
       // On success, return the set of email hashes registered
       // An email hash will be registered even if the email does not match a Facebook account
       $result = count($ret);
@@ -198,10 +198,10 @@ class sfFacebookConnect
       error_log("Exception thrown while calling facebook.connect.registerUsers: ".$e->getMessage());
     }
     $facebook->api_client->session_key = $session_key;
-    
+
     return $result;
   }
-  
 
-  
+
+
 }

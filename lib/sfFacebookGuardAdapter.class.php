@@ -8,7 +8,7 @@
  */
 abstract class sfFacebookGuardAdapter
 {
-    
+
    /**
    * Gets the name of the column with the facebook Uid
    *
@@ -18,10 +18,10 @@ abstract class sfFacebookGuardAdapter
    */
   public function getFacebookUidColumn()
   {
-    
+
     return $this->getProfileColumnName('facebook_uid');
   }
-  
+
    /**
    * Gets the name of the column with the email
    *
@@ -34,7 +34,7 @@ abstract class sfFacebookGuardAdapter
 
     return $this->getProfileColumnName('email');
   }
-  
+
   /**
    * Gets the name of the column with the email hash
    *
@@ -44,10 +44,10 @@ abstract class sfFacebookGuardAdapter
    */
   public function getEmailHashColumn()
   {
-    
+
     return $this->getProfileColumnName('email_hash');
   }
-    
+
   /**
    * gets the profile email
    *
@@ -58,10 +58,10 @@ abstract class sfFacebookGuardAdapter
    */
   public function getUserEmail(sfGuardUser $sfGuardUser)
   {
-    
+
     return $this->getUserProfileProperty($sfGuardUser,'email');
   }
-  
+
   /**
    * sets the profile email hash
    *
@@ -74,7 +74,7 @@ abstract class sfFacebookGuardAdapter
   {
     $this->setUserProfileProperty($user, 'email_hash', $email_hash);
   }
-  
+
   /**
    * Gets the facebook uid of the user
    *
@@ -87,7 +87,7 @@ abstract class sfFacebookGuardAdapter
   {
     return $this->getUserProfileProperty($user, 'facebook_uid');
   }
-  
+
   /**
    * Sets the facebook uid of the user
    *
@@ -100,7 +100,7 @@ abstract class sfFacebookGuardAdapter
   {
     $this->setUserProfileProperty($user, 'facebook_uid', $facebook_uid);
   }
-  
+
   /**
   *
   * @param sfGuardUser $user
@@ -110,7 +110,7 @@ abstract class sfFacebookGuardAdapter
   */
   public function isFacebookConnected($user)
   {
-  
+
     return $this->getUserFacebookUid($user) != '';
   }
 
@@ -144,10 +144,10 @@ abstract class sfFacebookGuardAdapter
    */
   public function getFieldName($field_name)
   {
-    
+
     return sfConfig::get('app_sf_guard_plugin_profile_'.$field_name.'_name', $field_name);
   }
-  
+
    /**
    * Gets the Php name given to the field
    *
@@ -157,7 +157,7 @@ abstract class sfFacebookGuardAdapter
    * @since 2009-05-17
    */
   abstract function getProfilePhpName($field_name);
-  
+
   /**
    * Gets the Php name given to the field
    *
@@ -167,9 +167,9 @@ abstract class sfFacebookGuardAdapter
    * @since 2009-05-17
    */
   abstract function getProfileColumnName($field_name);
-  
+
   /**
-   * gets a sfGuardUser using the facebook_uid column of his Profile class  
+   * gets a sfGuardUser using the facebook_uid column of his Profile class
    *
    * @param Integer $facebook_uid
    * @return sfGuardUser
@@ -177,9 +177,9 @@ abstract class sfFacebookGuardAdapter
    * @since 2009-05-17
    */
   abstract function getSfGuardUserByFacebookUid($facebook_uid);
-  
+
   /**
-   * tries to get a sfGuardUser using the facebook email hash  
+   * tries to get a sfGuardUser using the facebook email hash
    *
    * @param string[] $email_hashes
    * @return sfGuardUser
@@ -187,7 +187,7 @@ abstract class sfFacebookGuardAdapter
    * @since 2009-05-17
    */
   abstract function getSfGuardUserByEmailHashes($email_hashes);
-  
+
   /**
    * Creates an empty sfGuardUser with profile field Facebook UID set
    *
@@ -203,7 +203,7 @@ abstract class sfFacebookGuardAdapter
     $sfGuardUser->setUsername('Facebook_'.$facebook_uid);
     $this->setUserFacebookUid($sfGuardUser, $facebook_uid);
     sfFacebookConnect::newSfGuardConnectionHook(&$sfGuardUser, $facebook_uid);
-    
+
     // Save them into the database using a transaction to ensure a Facebook sfGuardUser cannot be stored without its facebook uid
     try
     {
@@ -228,9 +228,9 @@ abstract class sfFacebookGuardAdapter
 
     return $sfGuardUser;
   }
-  
+
   /**
-   * 
+   *
    * @param sfGuardUser $sf_guard_user
    * @return sfGuardUser
    * @author fabriceb
@@ -247,10 +247,10 @@ abstract class sfFacebookGuardAdapter
     {
       $sf_guard_user->addPermissionByName($permission);
     }
-    
+
     return $sf_guard_user;
   }
-  
+
   /**
    * gets Non Facebook-registered Users
    *
@@ -258,8 +258,8 @@ abstract class sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  abstract function getNonRegisteredUsers();  
-  
+  abstract function getNonRegisteredUsers();
+
   /**
   *
   * @param string $cookie
@@ -269,4 +269,4 @@ abstract class sfFacebookGuardAdapter
   */
   abstract function retrieveSfGuardUserByCookie($cookie);
 }
-  
+
