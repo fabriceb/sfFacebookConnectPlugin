@@ -96,7 +96,7 @@ class BasesfFacebookConnectAuthActions extends sfActions
     // the user exists in unactivated mode
     else
     {
-      $this->setFlash('Your account is unactivated');
+      $this->getUser()->setFlash('Your account is unactivated');
       $redirect_url = sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action');
     }
   
