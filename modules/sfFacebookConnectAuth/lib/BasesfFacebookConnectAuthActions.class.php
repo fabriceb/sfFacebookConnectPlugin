@@ -36,14 +36,30 @@ class BasesfFacebookConnectAuthActions extends sfActions
    */
   public function executeSignin()
   {
-    $create_automatically = !sfConfig::get('app_facebook_redirect_after_connect', false);
-    $sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession($create_automatically);
-
     $user = $this->getUser();
+    
+    // first check if user is already logged and not yet Facebook connected
+    if (
+      $user->isAuthenticated()
+      &&
+      !sfFacebook::getGuardAdapter()->getUserFacebookUid($user->getGuardUser())
+      &&
+      sfFacebook::getFacebookClient()->get_loggedin_user()
+      )
+    {
+      $sfGuardUser = $user->getGuardUser();
+      sfFacebook::getGuardAdapter()->setUserFacebookUid($sfGuardUser, sfFacebook::getFacebookClient()->get_loggedin_user());
+      $sfGuardUser->save();
+    }
+    else
+    {
+      $create_automatically = !sfConfig::get('app_facebook_redirect_after_connect', false);
+      $sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession($create_automatically);
+    }
+    
     if ($sfGuardUser)
     {
       $this->getContext()->getUser()->signIn($sfGuardUser);
-
 
       $referer = $user->getAttribute('referer', $this->getRequest()->getReferer());
       $user->getAttributeHolder()->remove('referer');
@@ -58,6 +74,8 @@ class BasesfFacebookConnectAuthActions extends sfActions
     }
     // check if user forgot to activate the account
     $sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession($create_automatically, false);
+    
+    // the user does not exist even in unactivated mode
     if (!$sfGuardUser)
     {
       if ($this->getRequest()->isXmlHttpRequest())
@@ -74,15 +92,16 @@ class BasesfFacebookConnectAuthActions extends sfActions
       }
       
       $redirect_url = sfConfig::get('app_facebook_redirect_after_connect_url');
-      if (!$redirect_url)
-      {
-        $redirect_url = sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action');
-      }
-  
-      return $this->redirect($redirect_url);
     }
-    
-    // TODO: What if the guy did not activate his account ?
+    // the user exists in unactivated mode
+    else
+    {
+      $this->setFlash('Your account is unactivated');
+      $redirect_url = sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action');
+    }
+  
+    return $this->redirect($redirect_url);
+
   }
   
 
