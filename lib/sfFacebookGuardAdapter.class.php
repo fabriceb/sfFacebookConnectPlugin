@@ -83,7 +83,7 @@ abstract class sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function getUserFacebookUid(&$user)
+  public function getUserFacebookUid($user)
   {
     return $this->getUserProfileProperty($user, 'facebook_uid');
   }

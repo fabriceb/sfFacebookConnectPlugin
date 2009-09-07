@@ -7,7 +7,6 @@
  */
 class sfFacebookUser extends sfGuardSecurityUser
 {
-  protected $currentFacebookUid = false;
 
   /**
    *
@@ -17,35 +16,19 @@ class sfFacebookUser extends sfGuardSecurityUser
    */
   public function getCurrentFacebookUid()
   {
-    if ($this->currentFacebookUid===false)
+    $sfGuardUser = $this->getGuardUser();
+    if ($sfGuardUser && sfFacebook::getFacebookClient()->get_loggedin_user() == sfFacebook::getGuardAdapter()->getUserFacebookUid($sfGuardUser))
     {
-      $this->currentFacebookUid = sfFacebook::getFacebookClient()->get_loggedin_user();
+      return sfFacebook::getFacebookClient()->get_loggedin_user();
     }
 
-    return $this->currentFacebookUid;
-  }
-
-  /**
-   *
-   * @param integer $facebook_uid
-   * @author fabriceb
-   * @since May 27, 2009 fabriceb
-   */
-  public function setCurrentFacebookUid($facebook_uid)
-  {
-    $this->currentFacebookUid = $facebook_uid;
+    return null;
   }
 
   public function isFacebookConnected()
   {
 
-    return ($this->getCurrentFacebookUid() != null);
-  }
-
-  public function signOut()
-  {
-    $this->setCurrentFacebookUid(false);
-    parent::signOut();
+    return !is_null($this->getCurrentFacebookUid());
   }
 
   /**
