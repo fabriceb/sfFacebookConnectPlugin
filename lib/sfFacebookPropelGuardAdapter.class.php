@@ -224,7 +224,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
 
     return sfGuardUserPeer::doSelectOne($c);
   }
-  
+
   /**
    * gets a sfGuardUser using the facebook_uid column of his Profile class or his email_hash
    *
@@ -237,7 +237,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
   public function getSfGuardUserByFacebookUid($facebook_uid, $isActive = true)
   {
     $sfGuardUser = self::retrieveSfGuardUserByFacebookUid($facebook_uid, $isActive);
-    
+
     if (!$sfGuardUser instanceof sfGuardUser)
     {
       if (sfConfig::get('sf_logging_enabled'))
@@ -246,7 +246,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
       }
       $sfGuardUser = sfFacebookConnect::getSfGuardUserByFacebookEmail($facebook_uid, $isActive);
     }
-    
+
     return $sfGuardUser;
   }
 
@@ -269,7 +269,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
 
     $c = new Criteria();
     $c->addJoin(sfGuardUserPeer::ID,$this->getSfGuardUserforeignKeyColumn());
-    $c->add($this->getEmailHashColumn(),$email_hashes,CRITERIA::IN);
+    $c->add($this->getEmailHashColumn(), $email_hashes, Criteria::IN);
     $c->add(sfGuardUserPeer::IS_ACTIVE, $isActive);
 
     // NOTE: if a user has multiple emails on their facebook account,
@@ -307,7 +307,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
   {
     $c = new Criteria();
     $c->addJoin(sfGuardUserPeer::ID,$this->getSfGuardUserforeignKeyColumn());
-    $c->add($this->getEmailHashColumn(), null, CRITERIA::ISNULL);
+    $c->add($this->getEmailHashColumn(), null, Criteria::ISNULL);
 
     $sfGuardUsers = sfGuardUserPeer::doSelect($c);
 
