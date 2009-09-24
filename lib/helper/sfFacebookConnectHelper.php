@@ -71,7 +71,8 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
   $default_options =
     array(
       'size' => 'medium',
-      'bg'   => 'light'
+      'bg'   => 'light',
+      'format' => 'short'
     );
   $options = array_merge($default_options, $options);
 
@@ -85,7 +86,7 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
   '
   <a href="#" onclick="sf_fb.requireSession('.implode(',',$js_arguments).');return false;">'.
     image_tag(
-      '/sfFacebookConnectPlugin/images/fb_'.$options['bg'].'_'.$options['size'].'_short.gif',
+      '/sfFacebookConnectPlugin/images/fb_'.$options['bg'].'_'.$options['size'].'_'.$options['format'].'.gif',
       array(
         'id' => 'fb_login_image',
         'alt' => 'Facebook Connect'
