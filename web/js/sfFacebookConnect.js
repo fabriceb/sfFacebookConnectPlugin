@@ -35,7 +35,7 @@ sfFacebookConnect.prototype.requireSession = function(forward, callback)
 	var current_obj = this;
 	callback = function(){current_obj.gotoLoginPage()};
   }
-  FB.Connect.requireSession(callback);
+  FB.ensureInit(function(){FB.Connect.requireSession(callback)});
 };
 
 /*

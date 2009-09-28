@@ -88,7 +88,16 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
     //<![CDATA[
     function fb_button_click()
     {
-      FB.ensureInit(function(){sf_fb.requireSession('.implode(',',$js_arguments).');});
+      if (typeof sf_fb == "undefined")
+      {
+        document.onload = function(){sf_fb.requireSession('.implode(',',$js_arguments).');};
+      }
+      else
+      {
+        sf_fb.requireSession('.implode(',',$js_arguments).');
+      }
+      
+      return false;
     }
     //]]>
   </script>
