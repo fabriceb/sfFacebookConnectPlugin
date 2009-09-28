@@ -84,7 +84,22 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
 
   $html =
   '
-  <a href="#" onclick="sf_fb.requireSession('.implode(',',$js_arguments).');return false;">'.
+  <script type="text/javascript">
+    //<![CDATA[
+    function fb_button_click()
+    {
+      if (typeof sf_fb == "undefined")
+      {
+        sf_fb = new sfFacebookConnect("'.sfConfig::get('app_facebook_api_key').'", "'.url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin')).'");
+      }
+      sf_fb.requireSession('.implode(',',$js_arguments).');
+      
+      return false;
+    }
+    //]]>
+  </script>
+  
+  <a href="#" onclick="return fb_button_click();">'.
     image_tag(
       '/sfFacebookConnectPlugin/images/fb_'.$options['bg'].'_'.$options['size'].'_'.$options['format'].'.gif',
       array(
