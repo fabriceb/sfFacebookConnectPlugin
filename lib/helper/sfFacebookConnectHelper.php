@@ -90,7 +90,7 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
     {
       if (typeof sf_fb == "undefined")
       {
-        document.onload = function(){sf_fb.requireSession('.implode(',',$js_arguments).');};
+        //document.onload = function(){sf_fb.requireSession('.implode(',',$js_arguments).');};
       }
       else
       {
