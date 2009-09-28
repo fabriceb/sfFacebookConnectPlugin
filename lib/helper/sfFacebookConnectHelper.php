@@ -90,9 +90,12 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
     {
       if (typeof sf_fb == "undefined")
       {
-        sf_fb = new sfFacebookConnect("'.sfConfig::get('app_facebook_api_key').'", "'.url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin')).'");
+        document.onload = function(){sf_fb.requireSession('.implode(',',$js_arguments).');};
       }
-      sf_fb.requireSession('.implode(',',$js_arguments).');
+      else
+      {
+        sf_fb.requireSession('.implode(',',$js_arguments).');
+      }
       
       return false;
     }
