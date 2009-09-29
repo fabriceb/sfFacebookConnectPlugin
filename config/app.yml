@@ -7,6 +7,7 @@ all:
     redirect_after_connect: false
     redirect_after_connect_url: ''
     connect_signin_url: 'sfFacebookConnectAuth/signin'
+    app_url: '/my-app'
 
   sf_guard_plugin:
     profile_class: sfGuardUserProfile
