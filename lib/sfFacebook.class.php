@@ -136,7 +136,14 @@ class sfFacebook
   public static function getSfGuardUserByFacebookSession($create = true, $isActive = true)
   {
     // We get the facebook uid from session
-    $fb_uid = self::getFacebookClient()->get_loggedin_user();
+    if (self::inCanvas())
+    {
+      $fb_uid = self::getFacebookClient()->get_canvas_user();
+    }
+    else
+    {
+      $fb_uid = self::getFacebookClient()->get_loggedin_user();
+    }
     if ($fb_uid)
     {
 
