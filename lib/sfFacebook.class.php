@@ -136,14 +136,7 @@ class sfFacebook
   public static function getSfGuardUserByFacebookSession($create = true, $isActive = true)
   {
     // We get the facebook uid from session
-    if (self::inCanvas())
-    {
-      $fb_uid = self::getFacebookClient()->get_canvas_user();
-    }
-    else
-    {
-      $fb_uid = self::getFacebookClient()->get_loggedin_user();
-    }
+    $fb_uid = self::getAnyFacebookUid();
     if ($fb_uid)
     {
 
@@ -331,6 +324,29 @@ class sfFacebook
     );
 
     return array_key_exists($culture, $culture_to_locale) ? $culture_to_locale[$culture] : $culture;
+  }
+  
+  /**
+  * @return interger $facebook_uid
+  * @author fabriceb
+  * @since Oct 6, 2009
+  */
+  public static function getAnyFacebookUid()
+  {
+    $fb_uid = self::getFacebookClient()->get_loggedin_user();
+    sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} Fb_uid from logged user : '.$fb_uid);
+    if (!$fb_uid)
+    {
+      $fb_uid = self::getFacebookClient()->get_canvas_user();
+      sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} Fb_uid from canvas user : '.$fb_uid);
+    }
+    if (!$fb_uid)
+    {
+      $fb_uid = self::getFacebookClient()->get_profile_user();
+      sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} Fb_uid from profile user : '.$fb_uid);
+    }
+  
+    return $fb_uid;
   }
 
 }
