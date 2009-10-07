@@ -111,7 +111,7 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
     //<![CDATA[
     function fb_button_click()
     {
-      if (typeof sf_fb == "undefined" || sf_fb == null)
+      if (typeof sf_fb == "undefined")
       {';
   
   
