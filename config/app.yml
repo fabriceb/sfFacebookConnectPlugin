@@ -8,6 +8,10 @@ all:
     redirect_after_connect_url: ''
     connect_signin_url: 'sfFacebookConnectAuth/signin'
     app_url: '/my-app'
+    js_framework: none # none, jQuery or prototype.
+    
+    # It is highly recommended to use a js framework if you want a correct experience in IE 
+    
 
   sf_guard_plugin:
     profile_class: sfGuardUserProfile

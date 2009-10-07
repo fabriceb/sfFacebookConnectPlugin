@@ -22,7 +22,7 @@ function include_bottom_facebook_connect_script($on_load_js = '')
     var sf_fb = null;
     window.onload = function()
     {
-      sf_fb = new sfFacebookConnect('<?php echo sfConfig::get('app_facebook_api_key') ?>', '<?php echo url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin')) ?>');
+      <?php echo init_sf_fb(); ?>
       <?php echo $on_load_js ?>
     }
     //]]>
@@ -50,12 +50,35 @@ function include_facebook_connect_script()
     //<![CDATA[
     if (typeof sf_fb == 'undefined')
     {
-      var sf_fb = new sfFacebookConnect('<?php echo sfConfig::get('app_facebook_api_key') ?>', '<?php echo url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin')) ?>');
+      <?php echo init_sf_fb(); ?>
     }
     //]]>
   </script>
   <?php
   sfFacebook::setJsLoaded();
+}
+
+/**
+ *
+ * @author fabriceb
+ * @since May 27, 2009 fabriceb
+ */
+function include_facebook_connect_script_src()
+{
+  if (sfFacebook::isJsLoaded())
+  {
+    return;
+  }
+  ?>
+  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
+  <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
+  <?php
+  sfFacebook::setJsLoaded();
+}
+
+function init_sf_fb()
+{
+  return "var sf_fb = new sfFacebookConnect('".sfConfig::get('app_facebook_api_key')."', '".url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin'))."');";
 }
 
 
@@ -88,12 +111,38 @@ function facebook_connect_button($forward = '', $callback = '', $options = array
     //<![CDATA[
     function fb_button_click()
     {
-      FB.ensureInit(
-        function()
-        {
-          sf_fb.requireSession('.implode(',',$js_arguments).');
-        }
-      );
+      if (typeof sf_fb == "undefined" || sf_fb == null)
+      {';
+  
+  
+  switch(sfConfig::get('app_facebook_js_framework'))
+  {
+    case 'jQuery':
+      $html .= '
+        jQuery(function(){sf_fb.requireSession('.implode(',',$js_arguments).'); });
+      ';
+      break;
+    case 'prototype':
+      $html .= '
+        document.observe("dom:loaded", function(){sf_fb.requireSession('.implode(',',$js_arguments).'); });
+      ';
+      break;
+    case 'none':
+    default:
+      $html .= '
+        window.onload = function() { sf_fb.requireSession('.implode(',',$js_arguments).'); };
+      ';
+      break;
+  }
+  
+  
+  $html .=
+      '
+      }
+      else
+      {
+        sf_fb.requireSession('.implode(',',$js_arguments).');
+      }
       
       return false;
     }
