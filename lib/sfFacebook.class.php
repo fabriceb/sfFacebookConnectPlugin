@@ -254,31 +254,34 @@ class sfFacebook
   * @return sfFacebookGuardAdapter
   * @author fabriceb
   * @since Aug 10, 2009
+  * @since 2009-10-08 Alban Creton : added configurability of the Guard Adapter.
   */
   public static function getGuardAdapter()
   {
-
-
-
     if (self::$guard_adapter === null)
-    {
-      if (class_exists('sfGuardUserPeer', true))
+    { 
+      if(sfConfig::get('app_facebook_guard_adapter') && class_exists(sfConfig::get('app_facebook_guard_adapter'), true))
       {
-        self::$guard_adapter = new sfFacebookPropelGuardAdapter();
+        $class = sfConfig::get('app_facebook_guard_adapter');
+      }
+      else if (class_exists('sfGuardUserPeer', true))
+      {
+        $class = 'sfFacebookPropelGuardAdapter';
       }
       else
       {
-        self::$guard_adapter = new sfFacebookDoctrineGuardAdapter();
+        $class = 'sfFacebookDoctrineGuardAdapter';
       }
+      self::$guard_adapter = new $class();
     }
-
     if (!self::$guard_adapter)
     {
       error_log('Could not create guard adapter.');
     }
-
+    
     return self::$guard_adapter;
   }
+  
 
   /**
    *
