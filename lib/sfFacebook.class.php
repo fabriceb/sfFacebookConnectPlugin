@@ -351,5 +351,28 @@ class sfFacebook
   
     return $fb_uid;
   }
+  
+  /**
+   * 
+   * @param sfWebRequest $request
+   * @return string
+   * @author fabriceb
+   * @since Oct 12, 2009
+   */
+  public static function getFacebookSigParameters(sfWebRequest $request)
+  {
+    $parameters = $request->getParameterHolder()->getAll();
+    
+    $parameter_string = '';
+    foreach ($parameters as $key => $parameter)
+    {
+      if (substr($key,0,3)=='fb_')
+      {
+        $parameter_string .= '&'.$key.'='.$parameter;
+      }
+    }
+    
+    return $parameter_string;
+  }
 
 }

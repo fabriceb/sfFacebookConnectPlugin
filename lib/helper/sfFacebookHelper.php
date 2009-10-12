@@ -19,12 +19,17 @@ function fb_url_for()
   $arguments = func_get_args();
     
   $host = '';
+  $fb_parameters = '';
   if (sfFacebook::inCanvas())
   {
     $host = sfConfig::get('app_facebook_app_url'); 
   }
+  else
+  {
+    $fb_parameters = '?'.sfFacebook::getFacebookSigParameters(sfContext::getInstance()->getRequest());
+  }
 
-  return $host.call_user_func_array('url_for', $arguments);
+  return $host.call_user_func_array('url_for', $arguments).$fb_parameters;
 }
 
 /**
