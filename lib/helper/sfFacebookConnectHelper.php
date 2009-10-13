@@ -15,7 +15,7 @@ function include_bottom_facebook_connect_script($on_load_js = '')
   }
   ?>
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
-  <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
+  <script src="<?php echo javascript_path('/sfFacebookConnectPlugin/js/sfFacebookConnect') ?>" type="text/javascript"></script>
 
   <script type="text/javascript">
     //<![CDATA[
@@ -44,7 +44,7 @@ function include_facebook_connect_script()
   }
   ?>
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
-  <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
+  <script src="<?php echo javascript_path('/sfFacebookConnectPlugin/js/sfFacebookConnect') ?>" type="text/javascript"></script>
 
   <script type="text/javascript">
     //<![CDATA[
@@ -71,14 +71,14 @@ function include_facebook_connect_script_src()
   }
   ?>
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
-  <script src="/sfFacebookConnectPlugin/js/sfFacebookConnect.js" type="text/javascript"></script>
+  <script src="<?php echo javascript_path('/sfFacebookConnectPlugin/js/sfFacebookConnect') ?>" type="text/javascript"></script>
   <?php
   sfFacebook::setJsLoaded();
 }
 
 function init_sf_fb()
 {
-  return "var sf_fb = new sfFacebookConnect('".sfConfig::get('app_facebook_api_key')."', '".url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin'))."');";
+  return "sf_fb = new sfFacebookConnect('".sfConfig::get('app_facebook_api_key')."', '".url_for(sfConfig::get('app_facebook_connect_signin_url','sfFacebookConnectAuth/signin'))."');";
 }
 
 
