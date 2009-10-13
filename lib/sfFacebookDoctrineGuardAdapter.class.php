@@ -48,6 +48,7 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
    */
   public function setUserProfileProperty(&$user, $property_name, $property)
   {
+    $property_name = $this->getFieldName($property_name);
     $user->getProfile()->$property_name = $property;
   }
 
@@ -62,6 +63,7 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
    */
   public function getUserProfileProperty($user, $property_name)
   {
+    $property_name = $this->getFieldName($property_name);
     
     return $user->getProfile()->$property_name;
   }
@@ -181,7 +183,7 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
       ->innerJoin('u.Profile p')
       ->where('p.'.$this->getEmailHashColumn().' IS NULL');
 
-    return $q->execute();
+    return $q->execute()->getData();
   }
 
   /**

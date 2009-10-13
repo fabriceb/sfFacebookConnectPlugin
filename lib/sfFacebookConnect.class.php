@@ -156,7 +156,7 @@ class sfFacebookConnect
     $hashed_users = array();
     foreach($sfGuardUsers as $sfGuardUser)
     {
-      $email = sfFacebookGuardAdapter::getUserEmail($sfGuardUser);
+      $email = sfFacebook::getGuardAdapter()->getUserEmail($sfGuardUser);
       $email_hash = self::getEmailHash($email);
       if ($email_hash != '')
       {
@@ -190,7 +190,7 @@ class sfFacebookConnect
       $result = count($ret);
       foreach($ret as $email_hash)
       {
-        sfFacebookGuardAdapter::setUserEmailHash($hashed_users[$email_hash],$email_hash);
+        sfFacebook::getGuardAdapter()->setUserEmailHash($hashed_users[$email_hash],$email_hash);
         $hashed_users[$email_hash]->getProfile()->save();
       }
     }
