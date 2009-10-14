@@ -20,11 +20,29 @@ function include_bottom_facebook_connect_script($on_load_js = '')
   <script type="text/javascript">
     //<![CDATA[
     var sf_fb = null;
-    window.onload = function()
+<?php
+    $html = '';
+    switch(sfConfig::get('app_facebook_js_framework'))
     {
-      <?php echo init_sf_fb(); ?>
-      <?php echo $on_load_js ?>
+      case 'jQuery':
+        $html .= '
+          jQuery(function(){'.init_sf_fb().$on_load_js.' });
+        ';
+        break;
+      case 'prototype':
+        $html .= '
+          document.observe("dom:loaded", function(){'.init_sf_fb().$on_load_js.' });
+        ';
+        break;
+      case 'none':
+      default:
+        $html .= '
+          window.onload = function() { '.init_sf_fb().$on_load_js.' };
+        ';
+        break;
     }
+    echo $html;
+?>
     //]]>
   </script>
   <?php
