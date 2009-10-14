@@ -57,3 +57,10 @@ function fb_iframe($src, $html_options = '', $fb_options = '')
   }
     
 }
+
+
+function FBJS()
+{
+  
+  return sfFacebook::inCanvas() ? 'Facebook' : 'FB.Connect'; 
+}
