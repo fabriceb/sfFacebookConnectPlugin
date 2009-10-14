@@ -208,19 +208,40 @@ class sfFacebook
    */
   public static function redirect($url, $statusCode = 302)
   {
+  
+    $context = sfContext::getInstance();
+    $response = $context->getResponse();
+    
     if (self::inCanvas())
     {
-      $url = sfContext::getInstance()->getController()->genUrl($url, false);
-      $url = sfConfig::get('app_facebook_app_url').$url;
+      $url = sfConfig::get('app_facebook_app_url').$context->getController()->genUrl($url, false);
+      if (sfConfig::get('sf_logging_enabled'))
+      {
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Redirect to "%s"', $url))));
+      }
+      
       $text = '<fb:redirect url="' . $url . '"/>';
-
-      sfContext::getInstance()->getResponse()->setContent(sfContext::getInstance()->getResponse()->getContent().$text);
+      $response->setContent(sfContext::getInstance()->getResponse()->getContent().$text);
 
       return sfView::NONE;
     }
-    sfContext::getInstance()->getController()->redirect($url, 0, $statusCode);
-
-    throw new sfStopException();
+    else
+    {
+      $fb_parameters = '?'.sfFacebook::getFacebookSigParameters(sfContext::getInstance()->getRequest());
+      $url = $context->getController()->genUrl($url, true).$fb_parameters;  
+      if (sfConfig::get('sf_logging_enabled'))
+      {
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Redirect to "%s"', $url))));
+      }
+  
+      $response->clearHttpHeaders();
+      $response->setStatusCode($statusCode);
+      $response->setHttpHeader('Location', $url);
+      $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', 0, htmlspecialchars($url, ENT_QUOTES, sfConfig::get('sf_charset'))));
+      $response->send();
+  
+      throw new sfStopException();
+    }
   }
 
   /**
