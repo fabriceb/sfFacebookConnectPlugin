@@ -215,10 +215,6 @@ class sfFacebook
     if (self::inCanvas())
     {
       $url = sfConfig::get('app_facebook_app_url').$context->getController()->genUrl($url, false);
-      if (sfConfig::get('sf_logging_enabled'))
-      {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Redirect to "%s"', $url))));
-      }
       
       $text = '<fb:redirect url="' . $url . '"/>';
       $response->setContent(sfContext::getInstance()->getResponse()->getContent().$text);
@@ -229,10 +225,6 @@ class sfFacebook
     {
       $fb_parameters = '?'.sfFacebook::getFacebookSigParameters(sfContext::getInstance()->getRequest());
       $url = $context->getController()->genUrl($url, true).$fb_parameters;  
-      if (sfConfig::get('sf_logging_enabled'))
-      {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Redirect to "%s"', $url))));
-      }
   
       $response->clearHttpHeaders();
       $response->setStatusCode($statusCode);
