@@ -32,7 +32,11 @@ Installation
         redirect_after_connect: false
         redirect_after_connect_url: ''
         connect_signin_url: 'sfFacebookConnectAuth/signin'
+        app_url: '/my-app'   # the facebook application canvas url
+        guard_adapter: ~     # to customise a guard adapter
+        js_framework: none # none, jQuery or prototype.
     
+    # It is highly recommended to use a js framework if you want a correct experience in IE    
       sf_guard_plugin:
         profile_class: sfGuardUserProfile
         profile_field_name: user_id
@@ -42,7 +46,7 @@ Installation
     
       facebook_connect:
         load_routing:     true
-        user_permissions: []        
+        user_permissions: []         
         
 
 
@@ -83,6 +87,12 @@ Installation
               .settings:
                 enabled_modules:      [default, sfFacebookConnectAuth, sfFacebookConnectDemo]
 
+  * Eventually make myUser.class.php extend sfFacebookUser
+
+  * Eventually use the sfFacebook filters
+  
+  * etc. A lot still needs to be documented.
+          
   * Clear your cache
 
         $ php symfony cc
