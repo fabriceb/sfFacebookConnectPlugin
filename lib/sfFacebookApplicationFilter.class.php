@@ -3,6 +3,7 @@
 /**
  *
  * @author fabriceb
+ * @package    sfFacebookConnectPlugin
  * @since Aug 24, 2009
  *
  */

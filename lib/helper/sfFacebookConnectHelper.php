@@ -1,5 +1,11 @@
 <?php
 
+/**
+ *
+ * @package    sfFacebookConnectPlugin
+ * @author     Fabrice Bernhard
+ *
+ */
 
 /**
  *

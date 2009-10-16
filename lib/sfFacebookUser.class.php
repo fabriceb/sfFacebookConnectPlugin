@@ -2,7 +2,8 @@
 
 /**
  *
- * @author fabriceb
+ * @package    sfFacebookConnectPlugin
+ * @author     Fabrice Bernhard
  *
  */
 class sfFacebookUser extends sfGuardSecurityUser

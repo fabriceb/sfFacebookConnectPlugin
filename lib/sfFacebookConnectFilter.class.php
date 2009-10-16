@@ -1,6 +1,8 @@
 <?php
 
-/** Based on sfGuardRememberMeFilter
+/** 
+ * 
+ * Based on sfGuardRememberMeFilter
  *
  *  Place this filter before the security filter in filters.yml e.g.
  *  ...

@@ -1,6 +1,11 @@
 <?php
 
-
+/**
+ *
+ * @package    sfFacebookConnectPlugin
+ * @author     Fabrice Bernhard
+ *
+ */
 class sfFacebookSecurityFilter extends sfBasicSecurityFilter
 {
   /**

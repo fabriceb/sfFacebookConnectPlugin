@@ -1,9 +1,12 @@
 <?php
 
 /**
-* @author fabriceb
-* @since Sep 29, 2009
-*/
+ *
+ * @package    sfFacebookConnectPlugin
+ * @author     Fabrice Bernhard
+ * @since Sep 29, 2009
+ *
+ */
 
 
 /**
