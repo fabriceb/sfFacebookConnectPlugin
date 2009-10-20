@@ -16,7 +16,7 @@ all:
   sf_guard_plugin:
     profile_class: sfGuardUserProfile
     profile_field_name: user_id
-    profile_facebook_uid_name: facebook_uid
+    profile_facebook_uid_name: facebook_uid # WARNING this column must be of type bigint ! 100000398093902 is a valid uid for example !
     profile_email_name: email
     profile_email_hash_name: email_hash
 
