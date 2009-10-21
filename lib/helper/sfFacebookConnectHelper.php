@@ -56,16 +56,13 @@ function include_bottom_facebook_connect_script($on_load_js = '')
 }
 
 /**
+ * RECOMMENDED WAY : use this function in conjunction with a slot put at the bottom of the layout
  *
  * @author fabriceb
  * @since May 27, 2009 fabriceb
  */
 function include_facebook_connect_script()
 {
-  if (sfFacebook::isJsLoaded())
-  {
-    return;
-  }
   ?>
   <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
   <script src="<?php echo javascript_path('/sfFacebookConnectPlugin/js/sfFacebookConnect') ?>" type="text/javascript"></script>
@@ -79,7 +76,6 @@ function include_facebook_connect_script()
     //]]>
   </script>
   <?php
-  sfFacebook::setJsLoaded();
 }
 
 /**
