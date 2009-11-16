@@ -14,7 +14,7 @@
  * @package    sfFacebookConnectPlugin
  * @author     fabriceb
  */
-class sfFacebookConnectrememberMeFilter extends sfFilter
+class sfFacebookConnectRememberMeFilter extends sfFilter
 {
 
   /**
