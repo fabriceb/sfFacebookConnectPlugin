@@ -58,3 +58,23 @@ sfFacebookConnect.prototype.publishFeedStory = function(form_bundle_id, template
     }
   );
 };
+
+sfFacebookConnect.prototype.showPermissionsDialog = function (permissions, callback)
+{
+  FB.ensureInit(
+    function()
+    {
+      FB.Connect.showPermissionDialog(permissions, callback);
+    }
+  );
+}
+
+sfFacebookConnect.prototype.streamPublish = function (message, attachment, action_links)
+{
+  FB.ensureInit(
+    function()
+    {
+      FB.Connect.streamPublish(message, attachment, action_links);
+    }
+  );
+}
