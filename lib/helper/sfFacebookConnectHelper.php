@@ -20,7 +20,8 @@ function include_bottom_facebook_connect_script($on_load_js = '')
     return;
   }
   ?>
-  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
+  <div id="fb-root"></div>
+  <script src="http://connect.facebook.net/<?php echo sfFacebook::getLocale() ?>/all.js"></script>
   <script src="<?php echo javascript_path('/sfFacebookConnectPlugin/js/sfFacebookConnect') ?>" type="text/javascript"></script>
 
   <script type="text/javascript">
@@ -64,7 +65,8 @@ function include_bottom_facebook_connect_script($on_load_js = '')
 function include_facebook_connect_script()
 {
   ?>
-  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
+  <div id="fb-root"></div>
+  <script src="http://connect.facebook.net/<?php echo sfFacebook::getLocale() ?>/all.js"></script>
   <script src="<?php echo javascript_path('/sfFacebookConnectPlugin/js/sfFacebookConnect') ?>" type="text/javascript"></script>
 
   <script type="text/javascript">
@@ -90,7 +92,8 @@ function include_facebook_connect_script_src()
     return;
   }
   ?>
-  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/<?php echo sfFacebook::getLocale() ?>" type="text/javascript"></script>
+  <div id="fb-root"></div>
+  <script src="http://connect.facebook.net/<?php echo sfFacebook::getLocale() ?>/all.js"></script>
   <script src="<?php echo javascript_path('/sfFacebookConnectPlugin/js/sfFacebookConnect') ?>" type="text/javascript"></script>
   <?php
   sfFacebook::setJsLoaded();

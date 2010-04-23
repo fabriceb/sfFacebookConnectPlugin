@@ -10,7 +10,7 @@ sfFacebookConnect = function(api_key, signin_url)
 };
 sfFacebookConnect.prototype.init = function()
 {
-  FB.init(this.api_key,this.xd_receiver_path);
+  FB.init({appId: this.api_key, status: true, cookie: true, xfbml: true});
 }
 sfFacebookConnect.prototype.getSigninUrl = function()
 {
@@ -35,7 +35,13 @@ sfFacebookConnect.prototype.requireSession = function(forward, callback)
 	var current_obj = this;
 	callback = function(){current_obj.gotoLoginPage()};
   }
-  FB.ensureInit(function(){FB.Connect.requireSession(callback)});
+  FB.login(function(response) {
+    if (response.session) {
+      callback();
+    } else {
+      // user cancelled login
+    }
+  });
 };
 
 /*
