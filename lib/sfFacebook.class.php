@@ -22,6 +22,25 @@ class sfFacebook
    * @author fabriceb
    * @since 2009-05-17
    */
+   
+  public static function getFacebookCookie() {
+    $app_id = self::getApiKey();
+    $application_secret = self::getApiSecret();
+    $args = array();
+    parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
+    ksort($args);
+    $payload = '';
+    foreach ($args as $key => $value) {
+      if ($key != 'sig') {
+        $payload .= $key . '=' . $value;
+      }
+    }
+    if (md5($payload . $application_secret) != $args['sig']) {
+      return null;
+    }
+    return $args;
+  }
+
   public static function getFacebookClient()
   {
     if (self::$client === null)
@@ -349,19 +368,11 @@ class sfFacebook
   */
   public static function getAnyFacebookUid()
   {
-    $fb_uid = self::getFacebookClient()->get_loggedin_user();
-    sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} Fb_uid from logged user : '.$fb_uid);
-    if (!$fb_uid)
-    {
-      $fb_uid = self::getFacebookClient()->get_canvas_user();
-      sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} Fb_uid from canvas user : '.$fb_uid);
-    }
-    if (!$fb_uid)
-    {
-      $fb_uid = self::getFacebookClient()->get_profile_user();
-      sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} Fb_uid from profile user : '.$fb_uid);
-    }
-  
+    
+    $cookie = self::getFacebookCookie();
+    $fb_uid = $cookie['uid'];
+    sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} Fb_uid from cookie : '.$fb_uid);
+      
     return $fb_uid;
   }
   
