@@ -46,7 +46,7 @@ class sfFacebookConnectFilter extends sfFilter
         $fb_sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession();
         if ($fb_sfGuardUser && $fb_sfGuardUser->getId() == $sfGuardUser->getId())
         {
-          $this->getContext()->getUser()->setCurrentFacebookUid(sfFacebookGuardAdapter::getUserProfileProperty($sfGuardUser,'facebook_uid'));
+          $this->getContext()->getUser()->setCurrentFacebookUid(sfFacebook::getGuardAdapter()->getUserProfileProperty($sfGuardUser,'facebook_uid'));
         }
       }
     }
