@@ -22,7 +22,7 @@ class sfFacebookApplicationFilter extends sfFilter
       if ($sfGuardUser)
       {
         $this->getContext()->getUser()->signIn($sfGuardUser, true);
-        $this->getContext()->getUser()->setCurrentFacebookUid(sfFacebookGuardAdapter::getUserProfileProperty($sfGuardUser,'facebook_uid'));
+        $this->getContext()->getUser()->setCurrentFacebookUid(sfFacebook::getGuardAdapter()->getUserProfileProperty($sfGuardUser,'facebook_uid'));
       }
       else
       {
