@@ -46,7 +46,7 @@ class sfFacebookDoctrineGuardAdapter extends sfFacebookGuardAdapter
    * @param string $property_name
    * @param mixed $property
    */
-  public function setUserProfileProperty(&$user, $property_name, $property)
+  public function setUserProfileProperty($user, $property_name, $property)
   {
     $property_name = $this->getFieldName($property_name);
     $user->getProfile()->$property_name = $property;

@@ -70,7 +70,7 @@ abstract class sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function setUserEmailHash(&$user, $email_hash)
+  public function setUserEmailHash($user, $email_hash)
   {
     $this->setUserProfileProperty($user, 'email_hash', $email_hash);
   }
@@ -96,7 +96,7 @@ abstract class sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function setUserFacebookUid(&$user, $facebook_uid)
+  public function setUserFacebookUid($user, $facebook_uid)
   {
     $this->setUserProfileProperty($user, 'facebook_uid', $facebook_uid);
   }
@@ -121,7 +121,7 @@ abstract class sfFacebookGuardAdapter
    * @param string $property_name
    * @param mixed $property
    */
-  abstract function setUserProfileProperty(&$user, $property_name, $property);
+  abstract function setUserProfileProperty($user, $property_name, $property);
 
   /**
    * Gets a property of the profile of the user

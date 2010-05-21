@@ -113,7 +113,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function setUserEmailHash(&$user, $email_hash)
+  public function setUserEmailHash($user, $email_hash)
   {
     $this->setUserProfileProperty($user, 'email_hash',$email_hash);
   }
@@ -126,7 +126,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
    * @author fabriceb
    * @since 2009-05-17
    */
-  public function setUserFacebookUid(&$user, $facebook_uid)
+  public function setUserFacebookUid($user, $facebook_uid)
   {
     $this->setUserProfileProperty($user, 'facebook_uid',$facebook_uid);
   }
@@ -138,7 +138,7 @@ class sfFacebookPropelGuardAdapter extends sfFacebookGuardAdapter
    * @param string $property_name
    * @param mixed $property
    */
-  public function setUserProfileProperty(&$user, $property_name, $property)
+  public function setUserProfileProperty($user, $property_name, $property)
   {
     $setPropertyMethod = 'set'.$this->getProfilePhpName($property_name);
     $user->getProfile()->$setPropertyMethod($property);
