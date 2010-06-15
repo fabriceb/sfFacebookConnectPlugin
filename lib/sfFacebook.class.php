@@ -9,11 +9,33 @@
 class sfFacebook
 {
   protected static
-    $client          = null;
+    $client          = null; // Facebook instance
   protected static
     $guard_adapter   = null;
   protected static
     $is_js_loaded       = false;
+
+
+
+  public static function getFacebookCookie()
+  {
+//    $app_id = self::getApiKey();
+//    $application_secret = self::getApiSecret();
+//    $args = array();
+//    var_dump($_COOKIE);
+//    parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
+//    ksort($args);
+//    $payload = '';
+//    foreach ($args as $key => $value) {
+//      if ($key != 'sig') {
+//        $payload .= $key . '=' . $value;
+//      }
+//    }
+//    if (md5($payload . $application_secret) != $args['sig']) {
+//      return null;
+//    }
+//    return $args;
+  }
 
   /**
    * gets the facebook client instance
@@ -21,31 +43,20 @@ class sfFacebook
    * @return Facebook
    * @author fabriceb
    * @since 2009-05-17
+   * @since 2010-05-12 Benjamin Grandfond <benjaming@theodo.fr>: new Facebook php-sdk
    */
-   
-  public static function getFacebookCookie() {
-    $app_id = self::getApiKey();
-    $application_secret = self::getApiSecret();
-    $args = array();
-    parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
-    ksort($args);
-    $payload = '';
-    foreach ($args as $key => $value) {
-      if ($key != 'sig') {
-        $payload .= $key . '=' . $value;
-      }
-    }
-    if (md5($payload . $application_secret) != $args['sig']) {
-      return null;
-    }
-    return $args;
-  }
-
   public static function getFacebookClient()
   {
     if (self::$client === null)
     {
-      self::$client = new Facebook(self::getApiKey(), self::getApiSecret());
+      $params = array(
+        'appId'  => self::getApiKey(),
+        'secret' => self::getApiSecret(),
+        'cookie' => self::getApiCookie(),
+        'domain' => self::getApiDomain()
+      );
+
+      self::$client = new Facebook($params);
     }
 
     if (!self::$client)
@@ -57,15 +68,43 @@ class sfFacebook
   }
 
   /**
+   * get the facebook session
    *
-   * @return FacebookRestClient
-   * @author fabriceb
-   * @since 2009-06-10
+   * @return Array
+   * @author Benjamin Grandfond <benjaming@theodo.fr>
+   * @since 2010-05-13
    */
-  public static function getFacebookApi()
+  public static function getSession()
   {
 
-    return self::getFacebookClient()->api_client;
+    return self::getFacebookClient()->getSession();
+  }
+
+  /**
+   * get the facebook user
+   *
+   * @return Array
+   * @author Benjamin Grandfond <benjaming@theodo.fr>
+   * @since 2010-05-13
+   */
+  public static function getUser()
+  {
+
+    return self::getFacebookClient()->getUser();
+  }
+
+  /**
+   * get datas through the faceook graph api
+   * @see http://developers.facebook.com/docs/api
+   *
+   * @return Array
+   * @author Benjamin Grandfond <benjaming@theodo.fr>
+   * @since 2010-05-13
+   */
+  public static function getFacebookApi($param)
+  {
+
+    return self::getFacebookClient()->api($param);
   }
 
    /**
@@ -94,7 +133,31 @@ class sfFacebook
     return sfConfig::get('app_facebook_api_secret');
   }
 
+  /**
+   * get the facebook app cookie support
+   *
+   * @return Boolean
+   * @author Benjamin Grandfond <benjaming@theodo.fr>
+   * @since 2010-05-12
+   */
+  public static function getApiCookie()
+  {
 
+    return sfConfig::get('app_facebook_api_cookie', true);
+  }
+
+  /**
+   * get the facebook app domain
+   *
+   * @return Boolean
+   * @author Benjamin Grandfond <benjaming@theodo.fr>
+   * @since 2010-05-12
+   */
+  public static function getApiDomain()
+  {
+
+    return sfConfig::get('app_facebook_api_domain', null);
+  }
 
   /**
    * gets or create user with facebook uid inprofile
@@ -118,7 +181,7 @@ class sfFacebook
 
     return $sfGuardUser;
   }
-  
+
   /**
    * gets user with facebook uid inprofile
    *
@@ -145,7 +208,7 @@ class sfFacebook
    * Gets the currently logged sfGuardUser using Facebook Session
    *
    * @param boolean $create whether to automatically create a sfGuardUser
-   * if none found corresponding to the Facebook session 
+   * if none found corresponding to the Facebook session
    * @param boolean $isActive
    * @return sfGuardUser
    * @author fabriceb
@@ -161,12 +224,12 @@ class sfFacebook
 
       if ($create)
       {
-        
+
         return self::getOrCreateUserByFacebookUid($fb_uid, $isActive);
       }
       else
       {
-        
+
         return self::getUserByFacebookUid($fb_uid, $isActive);
       }
     }
@@ -178,7 +241,7 @@ class sfFacebook
 
     return null;
   }
-  
+
   /**
    * checks the existence of the HTTP_X_FB_USER_REMOTE_ADDR porperty in the header
    * which is a sign of being included by the fbml interface
@@ -227,14 +290,14 @@ class sfFacebook
    */
   public static function redirect($url, $statusCode = 302)
   {
-  
+
     $context = sfContext::getInstance();
     $response = $context->getResponse();
-    
+
     if (self::inCanvas())
     {
       $url = sfConfig::get('app_facebook_app_url').$context->getController()->genUrl($url, false);
-      
+
       $text = '<fb:redirect url="' . $url . '"/>';
       $response->setContent(sfContext::getInstance()->getResponse()->getContent().$text);
 
@@ -243,14 +306,14 @@ class sfFacebook
     else
     {
       $fb_parameters = '?'.sfFacebook::getFacebookSigParameters(sfContext::getInstance()->getRequest());
-      $url = $context->getController()->genUrl($url, true).$fb_parameters;  
-  
+      $url = $context->getController()->genUrl($url, true).$fb_parameters;
+
       $response->clearHttpHeaders();
       $response->setStatusCode($statusCode);
       $response->setHttpHeader('Location', $url);
       $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', 0, htmlspecialchars($url, ENT_QUOTES, sfConfig::get('sf_charset'))));
       $response->send();
-  
+
       throw new sfStopException();
     }
   }
@@ -291,7 +354,7 @@ class sfFacebook
   public static function getGuardAdapter()
   {
     if (self::$guard_adapter === null)
-    { 
+    {
       if(sfConfig::get('app_facebook_guard_adapter') && class_exists(sfConfig::get('app_facebook_guard_adapter'), true))
       {
         $class = sfConfig::get('app_facebook_guard_adapter');
@@ -310,10 +373,10 @@ class sfFacebook
     {
       error_log('Could not create guard adapter.');
     }
-    
+
     return self::$guard_adapter;
   }
-  
+
 
   /**
    *
@@ -360,7 +423,7 @@ class sfFacebook
 
     return array_key_exists($culture, $culture_to_locale) ? $culture_to_locale[$culture] : $culture;
   }
-  
+
   /**
   * @return interger $facebook_uid
   * @author fabriceb
@@ -368,16 +431,16 @@ class sfFacebook
   */
   public static function getAnyFacebookUid()
   {
-    
+
     $cookie = self::getFacebookCookie();
     $fb_uid = $cookie['uid'];
     sfContext::getInstance()->getLogger()->info('{sfFacebookConnect} Fb_uid from cookie : '.$fb_uid);
-      
+
     return $fb_uid;
   }
-  
+
   /**
-   * 
+   *
    * @param sfWebRequest $request
    * @return string
    * @author fabriceb
@@ -386,7 +449,7 @@ class sfFacebook
   public static function getFacebookSigParameters(sfWebRequest $request)
   {
     $parameters = $request->getParameterHolder()->getAll();
-    
+
     $parameter_string = '';
     foreach ($parameters as $key => $parameter)
     {
@@ -395,7 +458,7 @@ class sfFacebook
         $parameter_string .= '&'.$key.'='.$parameter;
       }
     }
-    
+
     return $parameter_string;
   }
 
