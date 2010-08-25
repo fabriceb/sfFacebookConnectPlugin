@@ -271,10 +271,10 @@ class sfFacebook
    * @author fabriceb
    * @since Jun 8, 2009 fabriceb
    */
-  public static function inCanvas()
+  public static function inCanvas(sfWebRequest $request)
   {
 
-    return self::getFacebookClient()->in_fb_canvas();
+    return $request->getParameterHolder()->get('fb_sig_in_canvas', false);
   }
 
   /**

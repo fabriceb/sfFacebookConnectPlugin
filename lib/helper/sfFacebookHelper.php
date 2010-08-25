@@ -23,7 +23,7 @@ function fb_url_for()
     
   $host = '';
   $fb_parameters = '';
-  if (sfFacebook::inCanvas())
+  if (sfFacebook::inCanvas(sfContext::getInstance()->getRequest()))
   {
     $host = sfConfig::get('app_facebook_app_url'); 
   }
