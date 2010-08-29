@@ -29,7 +29,12 @@ function fb_url_for()
   }
   else
   {
-    $fb_parameters = '?'.sfFacebook::getFacebookSigParameters(sfContext::getInstance()->getRequest());
+    if (strpos($arguments[0], '?') !== false) {
+      $separator = '&';
+    } else {
+      $separator = '?';
+    }
+    $fb_parameters = $separator.sfFacebook::getFacebookSigParameters(sfContext::getInstance()->getRequest());
   }
 
   return $host.call_user_func_array('url_for', $arguments).$fb_parameters;

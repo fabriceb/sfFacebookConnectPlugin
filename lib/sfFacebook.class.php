@@ -472,16 +472,16 @@ class sfFacebook
   {
     $parameters = $request->getParameterHolder()->getAll();
 
-    $parameter_string = '';
+    $parameter_array = array();
     foreach ($parameters as $key => $parameter)
     {
       if (substr($key,0,3)=='fb_')
       {
-        $parameter_string .= '&'.$key.'='.$parameter;
+        $parameter_array[] = $key.'='.$parameter;
       }
     }
 
-    return $parameter_string;
+    return join('&', $parameter_array);
   }
 
 }
