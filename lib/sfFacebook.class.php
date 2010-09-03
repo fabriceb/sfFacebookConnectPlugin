@@ -19,22 +19,25 @@ class sfFacebook
 
   public static function getFacebookCookie()
   {
-//    $app_id = self::getApiKey();
-//    $application_secret = self::getApiSecret();
-//    $args = array();
-//    var_dump($_COOKIE);
-//    parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
-//    ksort($args);
-//    $payload = '';
-//    foreach ($args as $key => $value) {
-//      if ($key != 'sig') {
-//        $payload .= $key . '=' . $value;
-//      }
-//    }
-//    if (md5($payload . $application_secret) != $args['sig']) {
-//      return null;
-//    }
-//    return $args;
+    $app_id = self::getApiId();
+    $application_secret = self::getApiSecret();
+    $args = array();
+    parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
+    ksort($args);
+    $payload = '';
+    foreach ($args as $key => $value)
+    {
+      if ($key != 'sig')
+      {
+        $payload .= $key . '=' . $value;
+      }
+    }
+    if (md5($payload . $application_secret) != $args['sig'])
+    {
+      return null;
+    }
+
+    return $args;
   }
 
   /**
@@ -44,13 +47,14 @@ class sfFacebook
    * @author fabriceb
    * @since 2009-05-17
    * @since 2010-05-12 Benjamin Grandfond <benjaming@theodo.fr>: new Facebook php-sdk
+   * @since 2010-09-03 Benjamin Grandfond : correct the parameters sent to the facebook class constructor
    */
   public static function getFacebookClient()
   {
     if (self::$client === null)
     {
       $params = array(
-        'appId'  => self::getApiKey(),
+        'appId'  => self::getApiId(),
         'secret' => self::getApiSecret(),
         'cookie' => self::getApiCookie(),
         'domain' => self::getApiDomain()
@@ -107,7 +111,7 @@ class sfFacebook
     return self::getFacebookClient()->api($param);
   }
 
-   /**
+  /**
    * gets the facebook api key
    *
    * @return Facebook
@@ -120,7 +124,7 @@ class sfFacebook
     return sfConfig::get('app_facebook_api_key');
   }
 
-   /**
+  /**
    * gets the facebook api secret
    *
    * @return Facebook
@@ -131,6 +135,19 @@ class sfFacebook
   {
 
     return sfConfig::get('app_facebook_api_secret');
+  }
+
+  /**
+   * get the facebook app id
+   *
+   * @return integer
+   * @author Benjamin Grandfond <benjaming@theodo.fr>
+   * @since 2010-09-03
+   */
+  public function getAppIpd()
+  {
+
+    return sfConfig::get('app_facebook_api_id');
   }
 
   /**
