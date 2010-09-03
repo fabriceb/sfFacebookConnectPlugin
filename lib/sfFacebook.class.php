@@ -15,8 +15,6 @@ class sfFacebook
   protected static
     $is_js_loaded       = false;
 
-
-
   public static function getFacebookCookie()
   {
     $app_id = self::getApiId();
@@ -144,7 +142,7 @@ class sfFacebook
    * @author Benjamin Grandfond <benjaming@theodo.fr>
    * @since 2010-09-03
    */
-  public function getAppIpd()
+  public static function getApiId()
   {
 
     return sfConfig::get('app_facebook_api_id');
