@@ -79,7 +79,11 @@ class sfFacebookConnect
       // so we can look up directly next time
       sfFacebook::getGuardAdapter()->setUserFacebookUid($sfGuardUser, $facebook_uid);
       self::newSfGuardConnectionHook($sfGuardUser, $facebook_uid);
-      $sfGuardUser->getProfile()->save();
+      if (method_exists($sfGuardUser, "getProfile")) {
+      	$sfGuardUser->getProfile()->save();
+      } else {
+      	$sfGuardUser->save();
+      }
     }
 
     return $sfGuardUser;
@@ -194,7 +198,12 @@ class sfFacebookConnect
       foreach($ret as $email_hash)
       {
         sfFacebook::getGuardAdapter()->setUserEmailHash($hashed_users[$email_hash],$email_hash);
-        $hashed_users[$email_hash]->getProfile()->save();
+        if (method_exists($sfGuardUser, "getProfile")) {
+$hashed_users[$email_hash]->getProfile()->save();
+      } else {
+$hashed_users[$email_hash]->save();
+      }
+        
       }
     }
     catch (Exception $e)
