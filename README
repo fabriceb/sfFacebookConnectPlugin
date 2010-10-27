@@ -11,10 +11,19 @@ Installation
 ------------
 
 
-  * Install the plugin
+  * Install the plugin : the __git__ and recommanded way
+
+        $ git submodule add http://github.com/fabriceb/sfFacebookConnectPlugin.git plugins/sfFacebookConnectPlugin
+        $ cd plugins/sfFacebookConnectPlugin
+        $ git submodule init # add the facebook php-sdk as a submodule
+        $ git submodule update
+
+        # or all in one
+        $ git submodule add --recursive http://github.com/fabriceb/sfFacebookConnectPlugin.git plugins/sfFacebookConnectPlugin
+
+  * Install the plugin : the depreacated way.
 
         $ svn co http://svn.symfony-project.com/plugins/sfFacebookConnectPlugin/trunk sfFacebookConnectPlugin
-
 
   * Create your application on Facebook
 
