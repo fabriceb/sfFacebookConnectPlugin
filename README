@@ -13,8 +13,10 @@ Installation
 
   * Install the plugin
 
-        $ svn co http://svn.symfony-project.com/plugins/sfFacebookConnectPlugin/trunk sfFacebookConnectPlugin
-
+        $ git clone git://github.com/fabriceb/sfFacebookConnectPlugin.git
+        $ cd sfFacebookConnectPlugin
+        $ git submodule init
+        $ git submodule update
 
   * Create your application on Facebook
 
