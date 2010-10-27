@@ -15,6 +15,7 @@ class sfFacebook
   protected static
     $is_js_loaded       = false;
 
+
   public static function getFacebookCookie()
   {
     $app_id = self::getApiId();
@@ -47,6 +48,35 @@ class sfFacebook
    * @since 2010-05-12 Benjamin Grandfond <benjaming@theodo.fr>: new Facebook php-sdk
    * @since 2010-09-03 Benjamin Grandfond : correct the parameters sent to the facebook class constructor
    */
+
+
+  public static function getFacebookCookie()
+  {
+    $app_id = self::getApiKey();
+    $application_secret = self::getApiSecret();
+    $args = array();
+    if (!isset($_COOKIE['fbs_' . $app_id]))
+    {
+      return null;
+    }
+    parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
+    ksort($args);
+    $payload = '';
+    foreach ($args as $key => $value)
+    {
+      if ($key != 'sig')
+      {
+        $payload .= $key . '=' . $value;
+      }
+    }
+    if (md5($payload . $application_secret) != $args['sig'])
+    {
+      return null;
+    }
+    return $args;
+  }
+
+
   public static function getFacebookClient()
   {
     if (self::$client === null)
@@ -433,7 +463,8 @@ class sfFacebook
     $culture_to_locale = array(
       'fr' => 'fr_FR',
       'en' => 'en_US',
-      'de' => 'de_DE'
+      'de' => 'de_DE',
+      'it' => 'it_IT',
     );
 
     return array_key_exists($culture, $culture_to_locale) ? $culture_to_locale[$culture] : $culture;

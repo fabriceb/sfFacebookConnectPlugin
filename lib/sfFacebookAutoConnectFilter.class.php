@@ -1,20 +1,22 @@
 <?php
 
-/** 
- * 
+/**
+ *
  * Based on sfGuardRememberMeFilter
  *
  *  Place this filter before the security filter in filters.yml e.g.
  *  ...
- *  facebook_connect_remember_me:
- *    class: sfFacebookConnectRememberMeFilter
+ *  facebook_connect:
+ *    class: sfFacebookAutoConnectFilter
  *  security: ~
  *  ...
+ *
+ * This filter will auto-connect you looking at your Facebook session.
  *
  * @package    sfFacebookConnectPlugin
  * @author     fabriceb
  */
-class sfFacebookConnectRememberMeFilter extends sfFilter
+class sfFacebookAutoConnectFilter extends sfFilter
 {
 
   /**
@@ -22,7 +24,6 @@ class sfFacebookConnectRememberMeFilter extends sfFilter
    */
   public function execute($filterChain)
   {
-
     if ($this->isFirstCall() && $this->context->getUser()->isAnonymous())
     {
       $sfGuardUser = sfFacebook::getSfGuardUserByFacebookSession();
