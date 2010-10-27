@@ -37,8 +37,8 @@ $packagexml->addMaintainer('developer', 'benjaming', 'Benjamin Grandfond', 'benj
 $packagexml->setLicense('MIT License', 'http://www.symfony-project.org/license');
 
 // This will ADD a changelog entry to an existing package.xml
-$packagexml->setAPIVersion('1.1.0');
-$packagexml->setReleaseVersion('1.1.0');
+$packagexml->setAPIVersion('1.1.1');
+$packagexml->setReleaseVersion('1.1.1');
 $packagexml->setNotes('Symfony 1.4 officialy compatible version');
 
 $packagexml->setReleaseStability('stable');

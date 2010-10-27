@@ -32,10 +32,10 @@
   <active>yes</active>
  </developer>
  <date>2010-10-27</date>
- <time>18:39:26</time>
+ <time>18:45:49</time>
  <version>
-  <release>1.1.0</release>
-  <api>1.1.0</api>
+  <release>1.1.1</release>
+  <api>1.1.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -63,6 +63,10 @@ Symfony 1.4 officialy compatible version
    <file baseinstalldir="/" md5sum="e0136270e462488129834597571efa75" name="lib/routing/sfFacebookConnectRouting.class.php" role="php" />
    <file baseinstalldir="/" md5sum="17e9e89115e34e503e92c3e56207cf31" name="lib/task/facebookgeneratefeedTask.class.php" role="php" />
    <file baseinstalldir="/" md5sum="784697f6d96b0b360b08f1c5c843abd6" name="lib/task/registerUsersTask.class.php" role="php" />
+   <file baseinstalldir="/" md5sum="59986808d74d83ea8b9a2e948ab24be2" name="lib/vendor/php-sdk/readme.md" role="data" />
+   <file baseinstalldir="/" md5sum="d7dc953e1e1c6028bb6e5e4c9057e34a" name="lib/vendor/php-sdk/examples/example.php" role="php" />
+   <file baseinstalldir="/" md5sum="8f7fcef393c5fcfa50cb12e657be72d7" name="lib/vendor/php-sdk/src/facebook.php" role="php" />
+   <file baseinstalldir="/" md5sum="08b3a68277bf9f2d2e3d0876deed4a4e" name="lib/vendor/php-sdk/tests/tests.php" role="php" />
    <file baseinstalldir="/" md5sum="8fe6213bdae94d7d58fb54808f0c0acb" name="modules/sfFacebookConnectAuth/actions/actions.class.php" role="php" />
    <file baseinstalldir="/" md5sum="a699126932785542f8a7cd71717d879e" name="modules/sfFacebookConnectAuth/config/security.yml" role="data" />
    <file baseinstalldir="/" md5sum="e8708d5f6178083e8b06dfd362a29c7b" name="modules/sfFacebookConnectAuth/lib/BasesfFacebookConnectAuthActions.class.php" role="php" />
@@ -87,9 +91,10 @@ Symfony 1.4 officialy compatible version
    <file baseinstalldir="/" md5sum="b445f581c1363870174498b210ddf6aa" name="web/js/animation/animation.js" role="data" />
    <file baseinstalldir="/" md5sum="f01d4b7e216cbe34db9af04bd6fb17c3" name="web/js/animation/LICENSE" role="data" />
    <file baseinstalldir="/" md5sum="1c65797d6ae1bc9fec6481bbb763e6da" name="web/js/animation/README" role="data" />
-   <file baseinstalldir="/" md5sum="efe0333ce7495ba271b352ca2faf5b73" name="genpkgxml.php" role="php" />
+   <file baseinstalldir="/" md5sum="f8caa5d98cc668fbff0ed34c5081a22b" name="genpkgxml.php" role="php" />
    <file baseinstalldir="/" md5sum="950224ff2a39656ba5c4955ce06a41d7" name="LICENSE" role="doc" />
    <file baseinstalldir="/" md5sum="6dcaf595cb253475e19ae4a4cb216ba5" name="README" role="doc" />
+   <file baseinstalldir="/" md5sum="0a6ace2158b365157b34ddae0bd1c420" name="sfFacebookConnectPlugin-1.1.0.tgz" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -105,7 +110,6 @@ Symfony 1.4 officialy compatible version
     <channel>pear.symfony-project.com</channel>
     <min>1.0.0</min>
     <max>1.5.0</max>
-    <exclude>1.5.0</exclude>
    </package>
   </required>
  </dependencies>
@@ -113,8 +117,8 @@ Symfony 1.4 officialy compatible version
  <changelog>
   <release>
    <version>
-    <release>1.1.0</release>
-    <api>1.1.0</api>
+    <release>1.1.1</release>
+    <api>1.1.1</api>
    </version>
    <stability>
     <release>stable</release>
