@@ -88,8 +88,6 @@ Installation
           .settings:
             enabled_modules:      [default, sfFacebookConnectAuth, sfFacebookConnectDemo]
 
-  * Eventually make `myUser.class.php` extend `sfFacebookUser`
-
   * Eventually use the sfFacebook filters
   
   * etc. A lot still needs to be documented.
