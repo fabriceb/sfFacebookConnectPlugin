@@ -62,7 +62,7 @@ Installation
             user_id:          integer(4)
             first_name:       varchar(20)
             last_name:        varchar(20)
-            facebook_uid:     integer(4)
+            facebook_uid:     integer(5) # Must be BIGINT to fit Facebook's uids
             email:            varchar(255)
             email_hash:       varchar(255)
           relations:
