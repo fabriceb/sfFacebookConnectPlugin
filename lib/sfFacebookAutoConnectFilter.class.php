@@ -30,7 +30,7 @@ class sfFacebookAutoConnectFilter extends sfFilter
 
       if ($sfGuardUser)
       {
-        $this->getContext()->getUser()->signIn($sfGuardUser, true);
+        $this->getContext()->getUser()->signIn($sfGuardUser);
       }
     }
 

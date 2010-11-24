@@ -252,8 +252,8 @@ class sfFacebook
   }
 
   /**
-   * checks the existence of the HTTP_X_FB_USER_REMOTE_ADDR porperty in the header
-   * which is a sign of being included by the fbml interface
+   * checks if it's an FBML application
+   * this is an alias for inCanvas()
    *
    * @return boolean
    * @author fabriceb
@@ -262,10 +262,11 @@ class sfFacebook
   public static function isInsideFacebook()
   {
 
-    return isset($_SERVER['HTTP_X_FB_USER_REMOTE_ADDR']);
+    return self::inCanvas();
   }
 
   /**
+   * checks if it's an FBML application
    *
    * @return boolean
    * @author fabriceb
@@ -273,8 +274,19 @@ class sfFacebook
    */
   public static function inCanvas()
   {
+    return sfContext::getInstance()->getRequest()->getParameterHolder()->get('fb_sig_in_canvas', false);
+  }
 
-    return self::getFacebookClient()->in_fb_canvas();
+  /**
+   * checks if it's an iframe application
+   *
+   * @return boolean
+   * @author fabriceb
+   * @since Jun 8, 2009 fabriceb
+   */
+  public static function inIframe()
+  {
+    return sfContext::getInstance()->getRequest()->getParameterHolder()->get('fb_sig_in_iframe', false);
   }
 
   /**
@@ -460,16 +472,16 @@ class sfFacebook
   {
     $parameters = $request->getParameterHolder()->getAll();
 
-    $parameter_string = '';
+    $parameter_array = array();
     foreach ($parameters as $key => $parameter)
     {
       if (substr($key,0,3)=='fb_')
       {
-        $parameter_string .= '&'.$key.'='.$parameter;
+        $parameter_array[] = $key.'='.$parameter;
       }
     }
 
-    return $parameter_string;
+    return join('&', $parameter_array);
   }
 
 }

@@ -20,23 +20,28 @@
 function fb_url_for()
 {
   $arguments = func_get_args();
-    
+
   $host = '';
   $fb_parameters = '';
   if (sfFacebook::inCanvas())
   {
-    $host = sfConfig::get('app_facebook_app_url'); 
+    $host = sfConfig::get('app_facebook_app_url');
   }
   else
   {
-    $fb_parameters = '?'.sfFacebook::getFacebookSigParameters(sfContext::getInstance()->getRequest());
+    if (strpos($arguments[0], '?') !== false) {
+      $separator = '&';
+    } else {
+      $separator = '?';
+    }
+    $fb_parameters = $separator.sfFacebook::getFacebookSigParameters(sfContext::getInstance()->getRequest());
   }
 
   return $host.call_user_func_array('url_for', $arguments).$fb_parameters;
 }
 
 /**
- * 
+ *
  * @param string $src
  * @param string $html_options
  * @param string $fb_options
@@ -58,12 +63,12 @@ function fb_iframe($src, $html_options = '', $fb_options = '')
     <fb:iframe src="<?php echo $src ?>" <?php echo $html_options ?> <?php echo $fb_options ?>></fb:iframe>
     <?php
   }
-    
+
 }
 
 
 function FBJS()
 {
-  
-  return sfFacebook::inCanvas() ? 'Facebook' : 'FB.Connect'; 
+
+  return sfFacebook::inCanvas() ? 'Facebook' : 'FB.Connect';
 }
