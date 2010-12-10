@@ -17,9 +17,13 @@ class sfFacebook
 
   public static function getFacebookCookie()
   {
-    $app_id = self::getApiId();
+    $app_id = self::getApiKey();
     $application_secret = self::getApiSecret();
     $args = array();
+    if (!isset($_COOKIE['fbs_' . $app_id]))
+    {
+      return null;
+    }
     parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
     ksort($args);
     $payload = '';
@@ -34,7 +38,6 @@ class sfFacebook
     {
       return null;
     }
-
     return $args;
   }
 
